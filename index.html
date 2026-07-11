@@ -192,6 +192,101 @@
   }
   .hero-ctas { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
 
+  /* ---------- Carrusel del hero (keyvisual con dots) ---------- */
+  .car-track {
+    display: flex;
+    transition: transform 550ms ease;
+    position: relative;
+  }
+  .car-slide { flex: 0 0 100%; min-width: 100%; }
+  .car-slide-in {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 64px 84px 96px;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .car-copy .eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+  }
+  .car-copy .car-h {
+    font-size: clamp(26px, 3.8vw, 40px);
+    font-weight: 300;
+    color: #FFFFFF;
+    max-width: 20ch;
+    margin-top: 12px;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+  }
+  .car-copy .hero-sub { margin-top: 14px; font-size: 15.5px; color: rgba(255, 255, 255, 0.78); }
+  .car-art { display: grid; place-items: center; }
+  .car-art svg { width: 100%; max-width: 380px; height: auto; filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.45)); }
+  @media (max-width: 760px) {
+    .car-slide-in { grid-template-columns: 1fr; padding: 48px 56px 104px; gap: 24px; }
+    .car-art svg { max-width: 240px; }
+  }
+  .car-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    color: #FFFFFF;
+    font-size: 24px;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+    transition: background 120ms ease;
+  }
+  .car-arrow:hover { background: rgba(255, 255, 255, 0.14); }
+  .car-arrow.prev { left: 14px; }
+  .car-arrow.next { right: 14px; }
+  .car-dots {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: 12px;
+  }
+  .car-dot {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    background: transparent;
+    padding: 0;
+    transition: background 120ms ease;
+  }
+  .car-dot:hover { background: rgba(255, 255, 255, 0.5); }
+  .car-dot[aria-current="true"] { background: #FFFFFF; }
+
+  /* ---------- Cinta de marcas (marquee) ---------- */
+  .marquee {
+    overflow: hidden;
+    padding: 10px 0 6px;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: mq-scroll 48s linear infinite;
+  }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .mq-group { display: flex; align-items: center; gap: 72px; padding-right: 72px; }
+  .mq-item { white-space: nowrap; color: #70777E; flex: none; }
+  @keyframes mq-scroll { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  }
+
   /* ---------- Mosaico de paneles (visualpanels Technics) ---------- */
   .vp-grid {
     display: grid;
@@ -503,19 +598,137 @@
 
   <!-- ============ INICIO ============ -->
   <section class="panel is-active" id="panel-inicio" role="tabpanel" aria-labelledby="tab-inicio">
-    <div class="hero bleed">
+    <div class="hero bleed" id="hero-carousel">
       <canvas id="scope-canvas"></canvas>
-      <div class="hero-copy">
-        <p class="eyebrow">Servicio técnico especializado</p>
-        <h1>Reparación profesional de televisores y sistemas de audio</h1>
-        <p class="hero-sub">
-          Diagnóstico honesto, reparación a nivel de componente y garantía por escrito.
-          Equipos Hi-Fi, home theater y audio profesional.
-        </p>
-        <div class="hero-ctas">
-          <button class="btn" data-goto="contacto">Solicitar presupuesto</button>
-          <button class="btn ghost" data-goto="marcas">Ver marcas atendidas</button>
+      <div class="car-track" id="car-track">
+
+        <!-- Diapositiva 1: giradiscos antiguo (siempre la primera) -->
+        <div class="car-slide">
+          <div class="car-slide-in">
+            <div class="car-copy">
+              <p class="eyebrow">Restauración clásica</p>
+              <h1 class="car-h">Tu tocadiscos antiguo vuelve a girar como en su época</h1>
+              <p class="hero-sub">Cápsulas, agujas, brazos y motores. Velocidad estable y sonido de siempre, con garantía por escrito.</p>
+              <div class="hero-ctas"><button class="btn" data-goto="audio">Conozca más</button></div>
+            </div>
+            <div class="car-art" aria-hidden="true">
+              <svg viewBox="0 0 340 220" fill="none">
+                <rect x="6" y="14" width="328" height="192" rx="12" fill="#3B3128"/>
+                <rect x="16" y="24" width="308" height="172" rx="8" fill="#232930" stroke="#3A424C" stroke-width="1.5"/>
+                <circle cx="120" cy="110" r="76" fill="#14181D" stroke="#3A424C" stroke-width="2"/>
+                <circle cx="120" cy="110" r="72" stroke="#EDF1F6" stroke-opacity="0.10" stroke-dasharray="2 6" stroke-width="2"/>
+                <circle cx="120" cy="110" r="62" stroke="#EDF1F6" stroke-opacity="0.08" stroke-width="1.5"/>
+                <circle cx="120" cy="110" r="52" stroke="#EDF1F6" stroke-opacity="0.08" stroke-width="1.5"/>
+                <circle cx="120" cy="110" r="42" stroke="#EDF1F6" stroke-opacity="0.08" stroke-width="1.5"/>
+                <circle cx="120" cy="110" r="22" fill="#4C9EFF" fill-opacity="0.9"/>
+                <circle cx="120" cy="110" r="3.5" fill="#EDF1F6"/>
+                <circle cx="272" cy="62" r="17" fill="#2E353D" stroke="#4A525C" stroke-width="2"/>
+                <circle cx="292" cy="44" r="9" fill="#545E6A"/>
+                <line x1="283" y1="52" x2="272" y2="62" stroke="#8B95A0" stroke-width="5" stroke-linecap="round"/>
+                <line x1="272" y1="62" x2="196" y2="148" stroke="#8B95A0" stroke-width="4" stroke-linecap="round"/>
+                <rect x="186" y="146" width="18" height="10" rx="3" fill="#B7BFC8" transform="rotate(-48 195 151)"/>
+                <rect x="298" y="98" width="10" height="76" rx="5" fill="#1A2027" stroke="#3A424C"/>
+                <rect x="295" y="126" width="16" height="9" rx="2" fill="#8B95A0"/>
+                <circle cx="42" cy="176" r="9" fill="#1A2027" stroke="#4A525C" stroke-width="2"/>
+                <rect x="62" y="170" width="16" height="11" rx="2" fill="#39424C"/>
+                <rect x="84" y="170" width="16" height="11" rx="2" fill="#39424C"/>
+              </svg>
+            </div>
+          </div>
         </div>
+
+        <!-- Diapositiva 2: televisores -->
+        <div class="car-slide">
+          <div class="car-slide-in">
+            <div class="car-copy">
+              <p class="eyebrow">Servicio técnico especializado</p>
+              <h2 class="car-h">Reparación de televisores LED, OLED y QLED</h2>
+              <p class="hero-sub">Retroiluminación, placas main y T-CON, HDMI y calibración con sonda. De 24 a 98 pulgadas.</p>
+              <div class="hero-ctas"><button class="btn" data-goto="tv">Conozca más</button></div>
+            </div>
+            <div class="car-art" aria-hidden="true">
+              <svg viewBox="0 0 340 220" fill="none">
+                <rect x="20" y="18" width="300" height="168" rx="8" fill="#1A2027" stroke="#3A424C" stroke-width="2"/>
+                <rect x="32" y="30" width="276" height="144" rx="2" fill="#10151C"/>
+                <rect x="32" y="30" width="46" height="144" fill="#EDF1F6" fill-opacity="0.85"/>
+                <rect x="78" y="30" width="46" height="144" fill="#4C9EFF" fill-opacity="0.85"/>
+                <rect x="124" y="30" width="46" height="144" fill="#0057B8" fill-opacity="0.85"/>
+                <rect x="170" y="30" width="46" height="144" fill="#7A8894" fill-opacity="0.85"/>
+                <rect x="216" y="30" width="46" height="144" fill="#39424C" fill-opacity="0.9"/>
+                <rect x="262" y="30" width="46" height="144" fill="#20262E"/>
+                <rect x="140" y="192" width="60" height="8" rx="3" fill="#39424C"/>
+                <rect x="118" y="200" width="104" height="6" rx="3" fill="#2A313A"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Diapositiva 3: amplificadores -->
+        <div class="car-slide">
+          <div class="car-slide-in">
+            <div class="car-copy">
+              <p class="eyebrow">Hi-Fi y home theater</p>
+              <h2 class="car-h">Amplificadores y receivers, reparados a nivel de componente</h2>
+              <p class="hero-sub">Canal caído, protección activada, distorsión o zumbido. Medimos THD y potencia real antes de entregar.</p>
+              <div class="hero-ctas"><button class="btn" data-goto="audio">Conozca más</button></div>
+            </div>
+            <div class="car-art" aria-hidden="true">
+              <svg viewBox="0 0 340 180" fill="none">
+                <rect x="12" y="24" width="316" height="130" rx="8" fill="#1A2027" stroke="#3A424C" stroke-width="2"/>
+                <rect x="30" y="42" width="92" height="56" rx="4" fill="#10151C" stroke="#3A424C"/>
+                <line x1="76" y1="92" x2="98" y2="54" stroke="#4C9EFF" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M40 62 l6 -6 M56 54 l4 -7 M76 51 v-8 M96 54 l-4 -7 M112 62 l-6 -6" stroke="#7A8894" stroke-width="2"/>
+                <rect x="136" y="42" width="92" height="56" rx="4" fill="#10151C" stroke="#3A424C"/>
+                <line x1="182" y1="92" x2="196" y2="52" stroke="#4C9EFF" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M146 62 l6 -6 M162 54 l4 -7 M182 51 v-8 M202 54 l-4 -7 M218 62 l-6 -6" stroke="#7A8894" stroke-width="2"/>
+                <circle cx="262" cy="70" r="20" fill="#2E353D" stroke="#4A525C" stroke-width="2"/>
+                <line x1="262" y1="70" x2="262" y2="54" stroke="#B7BFC8" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="304" cy="56" r="10" fill="#2E353D" stroke="#4A525C" stroke-width="2"/>
+                <circle cx="304" cy="86" r="10" fill="#2E353D" stroke="#4A525C" stroke-width="2"/>
+                <rect x="30" y="116" width="14" height="14" rx="7" fill="#0057B8"/>
+                <rect x="56" y="120" width="40" height="7" rx="3" fill="#39424C"/>
+                <rect x="106" y="120" width="40" height="7" rx="3" fill="#39424C"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Diapositiva 4: altavoces -->
+        <div class="car-slide">
+          <div class="car-slide-in">
+            <div class="car-copy">
+              <p class="eyebrow">Altavoces y monitores</p>
+              <h2 class="car-h">Reconado de woofers y filtros de cruce como nuevos</h2>
+              <p class="hero-sub">Altavoces Hi-Fi, monitores de estudio activos y barras de sonido. Informe de medidas incluido.</p>
+              <div class="hero-ctas"><button class="btn" data-goto="audio">Conozca más</button></div>
+            </div>
+            <div class="car-art" aria-hidden="true">
+              <svg viewBox="0 0 340 220" fill="none">
+                <rect x="52" y="16" width="104" height="188" rx="8" fill="#1A2027" stroke="#3A424C" stroke-width="2"/>
+                <circle cx="104" cy="58" r="16" fill="#10151C" stroke="#4A525C" stroke-width="2"/>
+                <circle cx="104" cy="58" r="6" fill="#4C9EFF"/>
+                <circle cx="104" cy="142" r="40" fill="#10151C" stroke="#4A525C" stroke-width="2"/>
+                <circle cx="104" cy="142" r="26" stroke="#39424C" stroke-width="2"/>
+                <circle cx="104" cy="142" r="10" fill="#2E353D"/>
+                <rect x="184" y="46" width="104" height="158" rx="8" fill="#1A2027" stroke="#3A424C" stroke-width="2"/>
+                <circle cx="236" cy="82" r="13" fill="#10151C" stroke="#4A525C" stroke-width="2"/>
+                <circle cx="236" cy="82" r="5" fill="#4C9EFF"/>
+                <circle cx="236" cy="152" r="34" fill="#10151C" stroke="#4A525C" stroke-width="2"/>
+                <circle cx="236" cy="152" r="22" stroke="#39424C" stroke-width="2"/>
+                <circle cx="236" cy="152" r="8" fill="#2E353D"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="car-arrow prev" id="car-prev" aria-label="Diapositiva anterior">‹</button>
+      <button class="car-arrow next" id="car-next" aria-label="Diapositiva siguiente">›</button>
+      <div class="car-dots" id="car-dots">
+        <button class="car-dot" aria-current="true" aria-label="Ir a la diapositiva 1"></button>
+        <button class="car-dot" aria-current="false" aria-label="Ir a la diapositiva 2"></button>
+        <button class="car-dot" aria-current="false" aria-label="Ir a la diapositiva 3"></button>
+        <button class="car-dot" aria-current="false" aria-label="Ir a la diapositiva 4"></button>
       </div>
     </div>
 
@@ -628,6 +841,55 @@
         <span class="step-n">Paso 4</span>
         <h3>Entrega con garantía</h3>
         <p>Te lo devolvemos calibrado, limpio y con 6 meses de garantía por escrito.</p>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <h2>Marcas que reparamos</h2>
+      <button class="st-link" data-goto="marcas" style="color:var(--blue); font-size:14px;">Ver todas las marcas</button>
+    </div>
+    <div class="marquee" aria-label="Marcas que reparamos">
+      <div class="marquee-track">
+        <div class="mq-group">
+          <span class="mq-item wm-samsung">SAMSUNG</span>
+          <span class="mq-item wm-lg">LG</span>
+          <span class="mq-item wm-sony">SONY</span>
+          <span class="mq-item wm-tcl">TCL</span>
+          <span class="mq-item wm-hisense">HISENSE</span>
+          <span class="mq-item wm-philips">PHILIPS</span>
+          <span class="mq-item wm-panasonic">Panasonic</span>
+          <span class="mq-item wm-xiaomi">XIAOMI</span>
+          <span class="mq-item wm-bose">BOSE</span>
+          <span class="mq-item wm-jbl">JBL</span>
+          <span class="mq-item wm-yamaha">YAMAHA</span>
+          <span class="mq-item wm-denon">DENON</span>
+          <span class="mq-item wm-marantz">marantz</span>
+          <span class="mq-item wm-pioneer">PIONEER</span>
+          <span class="mq-item wm-harman">harman/kardon</span>
+          <span class="mq-item wm-sonos">SONOS</span>
+          <span class="mq-item wm-bo">BANG &amp; OLUFSEN</span>
+          <span class="mq-item wm-technics">Technics</span>
+        </div>
+        <div class="mq-group" aria-hidden="true">
+          <span class="mq-item wm-samsung">SAMSUNG</span>
+          <span class="mq-item wm-lg">LG</span>
+          <span class="mq-item wm-sony">SONY</span>
+          <span class="mq-item wm-tcl">TCL</span>
+          <span class="mq-item wm-hisense">HISENSE</span>
+          <span class="mq-item wm-philips">PHILIPS</span>
+          <span class="mq-item wm-panasonic">Panasonic</span>
+          <span class="mq-item wm-xiaomi">XIAOMI</span>
+          <span class="mq-item wm-bose">BOSE</span>
+          <span class="mq-item wm-jbl">JBL</span>
+          <span class="mq-item wm-yamaha">YAMAHA</span>
+          <span class="mq-item wm-denon">DENON</span>
+          <span class="mq-item wm-marantz">marantz</span>
+          <span class="mq-item wm-pioneer">PIONEER</span>
+          <span class="mq-item wm-harman">harman/kardon</span>
+          <span class="mq-item wm-sonos">SONOS</span>
+          <span class="mq-item wm-bo">BANG &amp; OLUFSEN</span>
+          <span class="mq-item wm-technics">Technics</span>
+        </div>
       </div>
     </div>
 
@@ -914,7 +1176,13 @@
       panel.hidden = !active;
     });
     window.scrollTo({ top: 0, behavior: 'auto' });
-    if (name === 'inicio') startScope();
+    if (name === 'inicio') {
+      goSlide(0);          // siempre empieza en el tocadiscos antiguo
+      startCarousel();
+      startScope();
+    } else {
+      stopCarousel();
+    }
   }
 
   tabs.forEach((tab, i) => {
@@ -932,6 +1200,41 @@
   document.querySelectorAll('[data-goto]').forEach((btn) => {
     btn.addEventListener('click', () => selectTab(btn.dataset.goto, true));
   });
+
+  /* ---------- Carrusel del hero ---------- */
+  const carTrack = document.getElementById('car-track');
+  const carSlides = Array.from(carTrack.children);
+  const carDots = Array.from(document.getElementById('car-dots').children);
+  const carousel = document.getElementById('hero-carousel');
+  let carIndex = 0;
+  let carTimer = null;
+
+  function goSlide(i) {
+    carIndex = ((i % carSlides.length) + carSlides.length) % carSlides.length;
+    carTrack.style.transform = 'translateX(-' + (carIndex * 100) + '%)';
+    carDots.forEach((d, j) => d.setAttribute('aria-current', String(j === carIndex)));
+  }
+  function stopCarousel() {
+    if (carTimer) { clearInterval(carTimer); carTimer = null; }
+  }
+  function startCarousel() {
+    stopCarousel();
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      carTimer = setInterval(() => goSlide(carIndex + 1), 5000);
+    }
+  }
+  carDots.forEach((dot, i) => dot.addEventListener('click', () => { goSlide(i); startCarousel(); }));
+  document.getElementById('car-prev').addEventListener('click', () => { goSlide(carIndex - 1); startCarousel(); });
+  document.getElementById('car-next').addEventListener('click', () => { goSlide(carIndex + 1); startCarousel(); });
+  carousel.addEventListener('mouseenter', stopCarousel);
+  carousel.addEventListener('mouseleave', () => {
+    if (document.getElementById('panel-inicio').classList.contains('is-active')) startCarousel();
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopCarousel();
+    else if (document.getElementById('panel-inicio').classList.contains('is-active')) startCarousel();
+  });
+  startCarousel();
 
   /* ---------- Brand filter ---------- */
   const chips = Array.from(document.querySelectorAll('.chip'));
