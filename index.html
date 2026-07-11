@@ -1,0 +1,1088 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<title>SEÑAL · Servicio Técnico de TV y Audio</title>
+<style>
+  /* ---------- Tokens ---------- */
+  :root {
+    --bg: #F2F3F1;
+    --surface: #FFFFFF;
+    --surface-2: #E9EBE7;
+    --ink: #1A1D21;
+    --muted: #5C636B;
+    --line: #D8DBD4;
+    --accent: #D9640D;
+    --accent-soft: rgba(217, 100, 13, 0.10);
+    --led: #2FA344;
+    --led-off: #B9BEB6;
+    --trace-2: #7A8894;
+    --shadow: 0 1px 2px rgba(20, 25, 30, 0.06), 0 6px 18px rgba(20, 25, 30, 0.05);
+
+    --font-display: "Bahnschrift", "Archivo Narrow", "Arial Narrow", "Roboto Condensed", "Segoe UI", sans-serif;
+    --font-body: "Segoe UI", system-ui, -apple-system, sans-serif;
+    --font-mono: "Cascadia Mono", "Consolas", "SF Mono", "Menlo", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14161A;
+      --surface: #1C1F24;
+      --surface-2: #24282E;
+      --ink: #ECEDEF;
+      --muted: #9BA1A9;
+      --line: #2C3038;
+      --accent: #FFA02E;
+      --accent-soft: rgba(255, 160, 46, 0.12);
+      --led: #3DD65B;
+      --led-off: #4A4F57;
+      --trace-2: #5B6875;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #F2F3F1;
+    --surface: #FFFFFF;
+    --surface-2: #E9EBE7;
+    --ink: #1A1D21;
+    --muted: #5C636B;
+    --line: #D8DBD4;
+    --accent: #D9640D;
+    --accent-soft: rgba(217, 100, 13, 0.10);
+    --led: #2FA344;
+    --led-off: #B9BEB6;
+    --trace-2: #7A8894;
+    --shadow: 0 1px 2px rgba(20, 25, 30, 0.06), 0 6px 18px rgba(20, 25, 30, 0.05);
+  }
+  :root[data-theme="dark"] {
+    --bg: #14161A;
+    --surface: #1C1F24;
+    --surface-2: #24282E;
+    --ink: #ECEDEF;
+    --muted: #9BA1A9;
+    --line: #2C3038;
+    --accent: #FFA02E;
+    --accent-soft: rgba(255, 160, 46, 0.12);
+    --led: #3DD65B;
+    --led-off: #4A4F57;
+    --trace-2: #5B6875;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  /* ---------- Base ---------- */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 1.08;
+    text-wrap: balance;
+    margin: 0;
+  }
+  p { margin: 0; max-width: 62ch; }
+  a { color: var(--accent); }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  .k-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+  }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* ---------- Header ---------- */
+  header {
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .header-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 24px;
+    max-width: 1080px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-mark {
+    width: 40px; height: 40px;
+    border: 2px solid var(--ink);
+    display: grid; place-items: center;
+    background: var(--surface);
+    flex: none;
+  }
+  .brand-mark svg { display: block; }
+  .brand-name {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .brand-name span { color: var(--accent); }
+  .brand-sub {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .header-status { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .led-row { display: flex; align-items: center; gap: 8px; }
+  .led {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--led);
+    box-shadow: 0 0 6px var(--led);
+    flex: none;
+  }
+  .header-phone {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    border: 1px solid var(--line);
+    padding: 8px 14px;
+    background: var(--surface-2);
+  }
+  .header-phone:hover { border-color: var(--accent); }
+
+  /* ---------- Tab bar (selector de fuente) ---------- */
+  .tabbar-outer {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .tabbar {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 10px 24px;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .tab {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-bottom-width: 3px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+  }
+  .tab .tab-num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+  .tab .tab-led {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--led-off);
+    transition: background 120ms ease, box-shadow 120ms ease;
+    flex: none;
+  }
+  .tab:hover { color: var(--ink); border-color: var(--muted); }
+  .tab[aria-selected="true"] {
+    color: var(--ink);
+    background: var(--surface);
+    border-bottom-color: var(--accent);
+  }
+  .tab[aria-selected="true"] .tab-led {
+    background: var(--led);
+    box-shadow: 0 0 6px var(--led);
+  }
+
+  /* ---------- Panels ---------- */
+  .panel { display: none; padding: 48px 0 72px; }
+  .panel.is-active { display: block; }
+  .panel-head { margin-bottom: 36px; }
+  .panel-head h2 { font-size: clamp(30px, 4.5vw, 44px); margin-top: 8px; }
+  .panel-head p { color: var(--muted); margin-top: 12px; }
+
+  /* ---------- Hero (Inicio) ---------- */
+  .hero h1 {
+    font-size: clamp(38px, 6.5vw, 68px);
+    font-weight: 700;
+    max-width: 18ch;
+  }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero-sub { color: var(--muted); margin-top: 18px; font-size: 18px; }
+  .hero-ctas { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 26px;
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--bg);
+    text-decoration: none;
+    transition: background 120ms ease, color 120ms ease;
+  }
+  .btn:hover { background: var(--accent); border-color: var(--accent); color: #14161A; }
+  .btn.ghost { background: transparent; color: var(--ink); }
+  .btn.ghost:hover { background: var(--accent-soft); color: var(--ink); border-color: var(--accent); }
+
+  .scope {
+    margin-top: 44px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .scope-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+  .scope canvas { display: block; width: 100%; height: 140px; }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 44px;
+  }
+  .stat {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 20px;
+  }
+  .stat b {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1;
+    margin-top: 10px;
+  }
+  .stat b i { font-style: normal; color: var(--accent); }
+
+  .steps { margin-top: 56px; }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .step {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 20px;
+  }
+  .step .step-n {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+  }
+  .step h3 { font-size: 18px; margin-top: 10px; }
+  .step p { font-size: 14px; color: var(--muted); margin-top: 8px; }
+
+  /* ---------- Service cards ---------- */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px;
+  }
+  .card {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: border-color 120ms ease, transform 120ms ease;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card h3 { font-size: 19px; }
+  .card p { font-size: 14px; color: var(--muted); flex: 1; }
+  .card .price {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    border-top: 1px dashed var(--line);
+    padding-top: 12px;
+  }
+
+  .note {
+    margin-top: 28px;
+    padding: 16px 20px;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 72ch;
+  }
+
+  details.faq {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    margin-top: -1px;
+  }
+  details.faq summary {
+    padding: 16px 20px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  details.faq summary::-webkit-details-marker { display: none; }
+  details.faq summary::after {
+    content: "+";
+    font-family: var(--font-mono);
+    color: var(--accent);
+    font-size: 18px;
+  }
+  details.faq[open] summary::after { content: "–"; }
+  details.faq .faq-body { padding: 0 20px 18px; font-size: 14px; color: var(--muted); }
+
+  /* ---------- Marcas ---------- */
+  .filter-row { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .chip {
+    padding: 8px 18px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 120ms ease, border-color 120ms ease;
+  }
+  .chip:hover { color: var(--ink); }
+  .chip[aria-pressed="true"] {
+    color: var(--ink);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .brand-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 12px;
+  }
+  .wm {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    min-height: 110px;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    color: var(--muted);
+    transition: color 140ms ease, border-color 140ms ease;
+    text-align: center;
+    position: relative;
+  }
+  .wm:hover { color: var(--ink); border-color: var(--accent); }
+  .wm .cat {
+    position: absolute;
+    top: 8px; right: 10px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    opacity: 0.7;
+  }
+  .wm.is-hidden { display: none; }
+  /* Wordmark voices — evocative type treatments, monochrome */
+  .wm-samsung  { font-family: var(--font-body); font-weight: 700; font-size: 22px; letter-spacing: -0.01em; }
+  .wm-lg       { font-family: var(--font-body); font-weight: 800; font-size: 26px; letter-spacing: 0.12em; }
+  .wm-sony     { font-family: Georgia, serif; font-weight: 700; font-size: 22px; letter-spacing: 0.14em; }
+  .wm-tcl      { font-family: var(--font-body); font-weight: 800; font-style: italic; font-size: 24px; letter-spacing: 0.06em; }
+  .wm-hisense  { font-family: var(--font-body); font-weight: 500; font-size: 19px; letter-spacing: 0.2em; }
+  .wm-philips  { font-family: var(--font-body); font-weight: 400; font-size: 17px; letter-spacing: 0.3em; }
+  .wm-panasonic{ font-family: var(--font-body); font-weight: 700; font-size: 17px; letter-spacing: 0.1em; }
+  .wm-xiaomi   { font-family: var(--font-body); font-weight: 600; font-size: 20px; letter-spacing: 0.16em; }
+  .wm-bose     { font-family: var(--font-body); font-weight: 900; font-size: 26px; letter-spacing: 0.08em; }
+  .wm-jbl      { font-family: var(--font-body); font-weight: 900; font-style: italic; font-size: 26px; letter-spacing: 0.04em; }
+  .wm-yamaha   { font-family: var(--font-body); font-weight: 300; font-size: 19px; letter-spacing: 0.32em; }
+  .wm-denon    { font-family: Georgia, serif; font-weight: 700; font-size: 21px; letter-spacing: 0.2em; }
+  .wm-marantz  { font-family: var(--font-body); font-weight: 300; font-size: 21px; letter-spacing: 0.22em; text-transform: lowercase; }
+  .wm-pioneer  { font-family: var(--font-display); font-weight: 700; font-style: italic; font-size: 22px; letter-spacing: 0.06em; }
+  .wm-harman   { font-family: var(--font-body); font-weight: 300; font-size: 16px; letter-spacing: 0.14em; text-transform: lowercase; }
+  .wm-sonos    { font-family: var(--font-body); font-weight: 500; font-size: 20px; letter-spacing: 0.28em; }
+  .wm-bo       { font-family: Georgia, serif; font-weight: 400; font-size: 15px; letter-spacing: 0.24em; }
+  .wm-technics { font-family: var(--font-body); font-weight: 700; font-style: italic; font-size: 21px; letter-spacing: 0.02em; }
+
+  /* ---------- Contacto ---------- */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 800px) { .contact-grid { grid-template-columns: 1fr; } }
+  .panel-box {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 26px;
+    box-shadow: var(--shadow);
+  }
+  .panel-box h3 { font-size: 20px; margin-bottom: 6px; }
+  .panel-box .box-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+  .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+  .field label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .field input, .field select, .field textarea {
+    font: inherit;
+    font-size: 15px;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 11px 12px;
+    width: 100%;
+  }
+  .field textarea { resize: vertical; min-height: 90px; }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+  }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
+
+  .estimate-out {
+    margin-top: 4px;
+    border: 1px dashed var(--line);
+    background: var(--bg);
+    padding: 18px 20px;
+  }
+  .estimate-out .amount {
+    font-family: var(--font-display);
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.1;
+  }
+  .estimate-out .fine { font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+  .contact-data { display: flex; flex-direction: column; gap: 0; }
+  .contact-data .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--line);
+    font-size: 14px;
+  }
+  .contact-data .row:last-child { border-bottom: none; }
+  .contact-data .row b { font-family: var(--font-mono); font-weight: 600; font-size: 13px; text-align: right; }
+
+  /* ---------- Toast ---------- */
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 28px;
+    transform: translate(-50%, 16px);
+    background: var(--ink);
+    color: var(--bg);
+    padding: 14px 22px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    border-left: 3px solid var(--accent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease, transform 200ms ease;
+    max-width: min(90vw, 480px);
+    z-index: 50;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  /* ---------- Footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+    padding: 28px 0;
+  }
+  .footer-in {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<header>
+  <div class="header-in">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg width="24" height="16" viewBox="0 0 24 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M1 8 L5 8 L8 2 L12 14 L15 5 L17 8 L23 8" />
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name">SE<span>Ñ</span>AL</div>
+        <span class="brand-sub">Servicio técnico audiovisual</span>
+      </div>
+    </div>
+    <div class="header-status">
+      <div class="led-row">
+        <span class="led" aria-hidden="true"></span>
+        <span class="k-label">Taller abierto · L–V 9:00–19:00</span>
+      </div>
+      <a class="header-phone num" href="tel:+34910000000">+34 910 000 000</a>
+    </div>
+  </div>
+</header>
+
+<div class="tabbar-outer">
+  <div class="tabbar" role="tablist" aria-label="Secciones del sitio">
+    <button class="tab" id="tab-inicio" role="tab" aria-selected="true" aria-controls="panel-inicio" data-tab="inicio">
+      <span class="tab-num">01</span> Inicio <span class="tab-led" aria-hidden="true"></span>
+    </button>
+    <button class="tab" id="tab-tv" role="tab" aria-selected="false" aria-controls="panel-tv" tabindex="-1" data-tab="tv">
+      <span class="tab-num">02</span> Televisores <span class="tab-led" aria-hidden="true"></span>
+    </button>
+    <button class="tab" id="tab-audio" role="tab" aria-selected="false" aria-controls="panel-audio" tabindex="-1" data-tab="audio">
+      <span class="tab-num">03</span> Audio <span class="tab-led" aria-hidden="true"></span>
+    </button>
+    <button class="tab" id="tab-marcas" role="tab" aria-selected="false" aria-controls="panel-marcas" tabindex="-1" data-tab="marcas">
+      <span class="tab-num">04</span> Marcas <span class="tab-led" aria-hidden="true"></span>
+    </button>
+    <button class="tab" id="tab-contacto" role="tab" aria-selected="false" aria-controls="panel-contacto" tabindex="-1" data-tab="contacto">
+      <span class="tab-num">05</span> Contacto <span class="tab-led" aria-hidden="true"></span>
+    </button>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- ============ 01 INICIO ============ -->
+  <section class="panel is-active hero" id="panel-inicio" role="tabpanel" aria-labelledby="tab-inicio">
+    <span class="k-label">Reparación de TV · Hi-Fi · Audio profesional</span>
+    <h1 style="margin-top:14px;">Tu equipo vuelve a verse y a sonar <em>como el primer día</em>.</h1>
+    <p class="hero-sub">
+      Diagnóstico honesto, reparación a nivel de componente y garantía por escrito.
+      Televisores de cualquier tamaño y sistemas de audio doméstico y profesional.
+    </p>
+    <div class="hero-ctas">
+      <button class="btn" data-goto="contacto">Pedir presupuesto</button>
+      <button class="btn ghost" data-goto="marcas">Ver marcas que reparamos</button>
+    </div>
+
+    <div class="scope" aria-hidden="true">
+      <div class="scope-head">
+        <span class="k-label">Banco de pruebas · Canal A/B</span>
+        <span class="k-label num">1 kHz · señal de referencia</span>
+      </div>
+      <canvas id="scope-canvas" height="140"></canvas>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><span class="k-label">Equipos reparados</span><b class="num">12.400<i>+</i></b></div>
+      <div class="stat"><span class="k-label">Garantía en reparación</span><b class="num">6 <i>meses</i></b></div>
+      <div class="stat"><span class="k-label">Valoración de clientes</span><b class="num">4,8<i>/5</i></b></div>
+      <div class="stat"><span class="k-label">Años de taller</span><b class="num">18</b></div>
+    </div>
+
+    <div class="steps">
+      <span class="k-label">Cómo trabajamos</span>
+      <div class="steps-grid">
+        <div class="step">
+          <span class="step-n">PASO 01</span>
+          <h3>Recepción y diagnóstico</h3>
+          <p>Traes el equipo o lo recogemos. En 24–48 h te decimos exactamente qué falla.</p>
+        </div>
+        <div class="step">
+          <span class="step-n">PASO 02</span>
+          <h3>Presupuesto cerrado</h3>
+          <p>Precio por escrito antes de tocar nada. Si no reparas, solo pagas el diagnóstico.</p>
+        </div>
+        <div class="step">
+          <span class="step-n">PASO 03</span>
+          <h3>Reparación y pruebas</h3>
+          <p>Reparación a nivel de componente y 24 h de pruebas de estrés en el banco.</p>
+        </div>
+        <div class="step">
+          <span class="step-n">PASO 04</span>
+          <h3>Entrega con garantía</h3>
+          <p>Te lo devolvemos calibrado, limpio y con 6 meses de garantía por escrito.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02 TELEVISORES ============ -->
+  <section class="panel" id="panel-tv" role="tabpanel" aria-labelledby="tab-tv" hidden>
+    <div class="panel-head">
+      <span class="k-label">02 · Televisores</span>
+      <h2>Reparación de televisores LED, OLED y QLED</h2>
+      <p>De 24 a 98 pulgadas. Trabajamos con esquemas de servicio originales y repuesto verificado.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <h3>Pantalla y retroiluminación</h3>
+        <p>Sustitución de tiras LED, difusores quemados, sombras y zonas oscuras. Imagen uniforme de nuevo.</p>
+        <span class="price num">desde 75 €</span>
+      </div>
+      <div class="card">
+        <h3>No enciende / fuente de alimentación</h3>
+        <p>Reparación de la placa de alimentación a nivel de componente: condensadores, MOSFET, PFC.</p>
+        <span class="price num">desde 60 €</span>
+      </div>
+      <div class="card">
+        <h3>Placa main y T-CON</h3>
+        <p>Imagen congelada, líneas verticales, doble imagen o arranques en bucle. Reballing incluido si procede.</p>
+        <span class="price num">desde 90 €</span>
+      </div>
+      <div class="card">
+        <h3>Puertos HDMI y conectividad</h3>
+        <p>HDMI sin señal, ARC/eARC que no funciona, WiFi o Bluetooth caídos. Sustitución de conectores.</p>
+        <span class="price num">desde 45 €</span>
+      </div>
+      <div class="card">
+        <h3>Software y Smart TV</h3>
+        <p>Actualización de firmware, recuperación de sistemas bloqueados y restauración de fábrica segura.</p>
+        <span class="price num">desde 35 €</span>
+      </div>
+      <div class="card">
+        <h3>Calibración de imagen</h3>
+        <p>Ajuste profesional de color, gamma y balance de blancos con sonda. Ideal para cine en casa.</p>
+        <span class="price num">desde 80 €</span>
+      </div>
+    </div>
+    <div class="note">
+      El diagnóstico cuesta <b class="num">15 €</b> y se descuenta íntegro del precio de la reparación.
+      Si tu panel no tiene reparación viable, te lo decimos claro y no pagas la mano de obra.
+    </div>
+    <div style="margin-top:36px;">
+      <span class="k-label">Preguntas frecuentes</span>
+      <div style="margin-top:12px;">
+        <details class="faq">
+          <summary>¿Merece la pena reparar un televisor antiguo?</summary>
+          <div class="faq-body">Si la avería está en la fuente, la main o la retroiluminación, casi siempre sí: la reparación suele costar entre un 15 % y un 30 % del precio de un equipo nuevo equivalente. Si el panel está roto físicamente, te lo desaconsejamos y no cobramos mano de obra.</div>
+        </details>
+        <details class="faq">
+          <summary>¿Cuánto tarda una reparación de TV?</summary>
+          <div class="faq-body">La mayoría salen en 3–5 días laborables. Si hay que pedir repuesto específico del fabricante, entre 7 y 10 días. Siempre te avisamos antes de empezar.</div>
+        </details>
+        <details class="faq">
+          <summary>¿Hacéis servicio a domicilio?</summary>
+          <div class="faq-body">Para televisores de 65" o más ofrecemos recogida y entrega a domicilio en un radio de 30 km. Las reparaciones siempre se hacen en el taller, donde está el banco de pruebas.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 AUDIO ============ -->
+  <section class="panel" id="panel-audio" role="tabpanel" aria-labelledby="tab-audio" hidden>
+    <div class="panel-head">
+      <span class="k-label">03 · Audio</span>
+      <h2>Hi-Fi doméstico y audio profesional</h2>
+      <p>Desde tu amplificador de toda la vida hasta el equipo de directo. Medimos, no adivinamos.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <h3>Amplificadores y receivers AV</h3>
+        <p>Canal caído, protección activada, distorsión o zumbido. Restauración de etapas de potencia clásicas.</p>
+        <span class="price num">desde 70 €</span>
+      </div>
+      <div class="card">
+        <h3>Altavoces y monitores</h3>
+        <p>Reconado de woofers, sustitución de tweeters y filtros de cruce. Monitores de estudio activos incluidos.</p>
+        <span class="price num">desde 50 €</span>
+      </div>
+      <div class="card">
+        <h3>Barras de sonido y subwoofers</h3>
+        <p>Sin sonido, HDMI-ARC caído, subwoofer que no enlaza. Reparación de placas amplificadoras clase D.</p>
+        <span class="price num">desde 55 €</span>
+      </div>
+      <div class="card">
+        <h3>Giradiscos y vinilo</h3>
+        <p>Cambio de cápsula y aguja, ajuste de brazo, reparación de motores y velocidad inestable.</p>
+        <span class="price num">desde 45 €</span>
+      </div>
+      <div class="card">
+        <h3>Equipos de directo y estudio</h3>
+        <p>Etapas de potencia, mesas de mezclas, interfaces y previos. Mantenimiento para salas y bandas.</p>
+        <span class="price num">desde 85 €</span>
+      </div>
+      <div class="card">
+        <h3>Mantenimiento preventivo</h3>
+        <p>Limpieza de potenciómetros, recap de condensadores envejecidos y verificación completa en banco.</p>
+        <span class="price num">desde 60 €</span>
+      </div>
+    </div>
+    <div class="note">
+      Todo equipo de audio pasa por el banco de medida: respuesta en frecuencia, THD y potencia real
+      antes y después de la reparación. Te entregamos el informe con las medidas.
+    </div>
+    <div style="margin-top:36px;">
+      <span class="k-label">Nuestro banco de pruebas</span>
+      <div class="contact-data" style="margin-top:12px; max-width:560px;">
+        <div class="row"><span>Generador de señal</span><b class="num">10 Hz – 100 kHz</b></div>
+        <div class="row"><span>Analizador de distorsión</span><b class="num">THD+N &lt; 0,001 %</b></div>
+        <div class="row"><span>Carga fantasma</span><b class="num">2/4/8 Ω · 500 W</b></div>
+        <div class="row"><span>Osciloscopio</span><b class="num">4 canales · 200 MHz</b></div>
+        <div class="row"><span>Sonda de calibración de imagen</span><b class="num">colorímetro + patrón</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 MARCAS ============ -->
+  <section class="panel" id="panel-marcas" role="tabpanel" aria-labelledby="tab-marcas" hidden>
+    <div class="panel-head">
+      <span class="k-label">04 · Marcas</span>
+      <h2>Reparamos todas las marcas principales</h2>
+      <p>Y muchas más: si la tuya no está en la lista, pregúntanos. Casi seguro que también.</p>
+    </div>
+    <div class="filter-row" role="group" aria-label="Filtrar marcas por categoría">
+      <button class="chip" aria-pressed="true" data-filter="all">Todas</button>
+      <button class="chip" aria-pressed="false" data-filter="tv">Televisores</button>
+      <button class="chip" aria-pressed="false" data-filter="audio">Audio</button>
+    </div>
+    <div class="brand-grid" id="brand-grid">
+      <div class="wm wm-samsung" data-cat="tv"><span class="cat">TV</span>SAMSUNG</div>
+      <div class="wm wm-lg" data-cat="tv"><span class="cat">TV</span>LG</div>
+      <div class="wm wm-sony" data-cat="tv audio"><span class="cat">TV·AUDIO</span>SONY</div>
+      <div class="wm wm-tcl" data-cat="tv"><span class="cat">TV</span>TCL</div>
+      <div class="wm wm-hisense" data-cat="tv"><span class="cat">TV</span>HISENSE</div>
+      <div class="wm wm-philips" data-cat="tv audio"><span class="cat">TV·AUDIO</span>PHILIPS</div>
+      <div class="wm wm-panasonic" data-cat="tv audio"><span class="cat">TV·AUDIO</span>Panasonic</div>
+      <div class="wm wm-xiaomi" data-cat="tv"><span class="cat">TV</span>XIAOMI</div>
+      <div class="wm wm-bose" data-cat="audio"><span class="cat">AUDIO</span>BOSE</div>
+      <div class="wm wm-jbl" data-cat="audio"><span class="cat">AUDIO</span>JBL</div>
+      <div class="wm wm-yamaha" data-cat="audio"><span class="cat">AUDIO</span>YAMAHA</div>
+      <div class="wm wm-denon" data-cat="audio"><span class="cat">AUDIO</span>DENON</div>
+      <div class="wm wm-marantz" data-cat="audio"><span class="cat">AUDIO</span>marantz</div>
+      <div class="wm wm-pioneer" data-cat="audio"><span class="cat">AUDIO</span>PIONEER</div>
+      <div class="wm wm-harman" data-cat="audio"><span class="cat">AUDIO</span>harman/kardon</div>
+      <div class="wm wm-sonos" data-cat="audio"><span class="cat">AUDIO</span>SONOS</div>
+      <div class="wm wm-bo" data-cat="audio"><span class="cat">AUDIO</span>BANG &amp; OLUFSEN</div>
+      <div class="wm wm-technics" data-cat="audio"><span class="cat">AUDIO</span>Technics</div>
+    </div>
+    <div class="note">
+      Las marcas mostradas pertenecen a sus respectivos propietarios y se citan únicamente para indicar
+      los equipos con los que trabajamos. SEÑAL es un servicio técnico independiente, no un servicio
+      oficial de estas marcas.
+    </div>
+  </section>
+
+  <!-- ============ 05 CONTACTO ============ -->
+  <section class="panel" id="panel-contacto" role="tabpanel" aria-labelledby="tab-contacto" hidden>
+    <div class="panel-head">
+      <span class="k-label">05 · Contacto</span>
+      <h2>Pide presupuesto sin compromiso</h2>
+      <p>Cuéntanos qué le pasa a tu equipo y te llamamos en menos de 24 horas laborables.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="panel-box">
+        <h3>Solicitud de reparación</h3>
+        <p class="box-sub">Los campos con * son obligatorios.</p>
+        <form id="contact-form" novalidate>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-nombre">Nombre *</label>
+              <input id="f-nombre" name="nombre" type="text" required autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="f-tel">Teléfono *</label>
+              <input id="f-tel" name="telefono" type="tel" required autocomplete="tel" />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-equipo">Tipo de equipo *</label>
+              <select id="f-equipo" required>
+                <option value="tv-s">Televisor hasta 43"</option>
+                <option value="tv-m" selected>Televisor 44–65"</option>
+                <option value="tv-l">Televisor más de 65"</option>
+                <option value="soundbar">Barra de sonido</option>
+                <option value="ampli">Amplificador / Receiver AV</option>
+                <option value="speakers">Altavoces / Monitores</option>
+                <option value="pro">Equipo profesional</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-problema">Problema principal *</label>
+              <select id="f-problema" required>
+                <option value="no-enciende" selected>No enciende</option>
+                <option value="imagen">Problema de imagen / pantalla</option>
+                <option value="sonido">Sin sonido / canal caído</option>
+                <option value="conector">Conectores / HDMI</option>
+                <option value="software">Software / configuración</option>
+                <option value="mantenimiento">Mantenimiento / revisión</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-marca">Marca y modelo</label>
+            <input id="f-marca" name="marca" type="text" placeholder="Ej.: Samsung QE55Q80B" />
+          </div>
+          <div class="field">
+            <label for="f-desc">Describe la avería</label>
+            <textarea id="f-desc" name="descripcion" placeholder="Ej.: se ve la mitad inferior de la pantalla muy oscura desde hace una semana…"></textarea>
+          </div>
+
+          <div class="estimate-out" aria-live="polite">
+            <span class="k-label">Estimación orientativa</span>
+            <div class="amount num" id="estimate-amount">60 – 180 €</div>
+            <p class="fine">Basada en averías similares en el taller. El presupuesto cerrado se confirma tras el diagnóstico (15 €, descontables de la reparación).</p>
+          </div>
+
+          <div style="margin-top:20px;">
+            <button class="btn" type="submit">Enviar solicitud</button>
+          </div>
+        </form>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div class="panel-box">
+          <h3>El taller</h3>
+          <p class="box-sub">Ven a vernos o llámanos directamente.</p>
+          <div class="contact-data">
+            <div class="row"><span>Dirección</span><b>C/ del Osciloscopio 12, Madrid</b></div>
+            <div class="row"><span>Teléfono</span><b class="num">+34 910 000 000</b></div>
+            <div class="row"><span>WhatsApp</span><b class="num">+34 600 000 000</b></div>
+            <div class="row"><span>Email</span><b>taller@senal.example</b></div>
+            <div class="row"><span>Lunes–Viernes</span><b class="num">9:00 – 19:00</b></div>
+            <div class="row"><span>Sábado</span><b class="num">10:00 – 14:00</b></div>
+          </div>
+        </div>
+        <div class="panel-box">
+          <h3>Garantías</h3>
+          <div class="contact-data">
+            <div class="row"><span>Reparación</span><b class="num">6 meses por escrito</b></div>
+            <div class="row"><span>Repuestos</span><b>originales o equivalentes verificados</b></div>
+            <div class="row"><span>Sin arreglo</span><b>solo pagas el diagnóstico</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-in">
+    <span>© 2026 SEÑAL · Servicio técnico audiovisual independiente</span>
+    <span>Las marcas citadas pertenecen a sus respectivos propietarios.</span>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  /* ---------- Tabs ---------- */
+  const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+  const panels = {
+    inicio: document.getElementById('panel-inicio'),
+    tv: document.getElementById('panel-tv'),
+    audio: document.getElementById('panel-audio'),
+    marcas: document.getElementById('panel-marcas'),
+    contacto: document.getElementById('panel-contacto'),
+  };
+
+  function selectTab(name, focus) {
+    tabs.forEach((t) => {
+      const active = t.dataset.tab === name;
+      t.setAttribute('aria-selected', String(active));
+      t.tabIndex = active ? 0 : -1;
+      if (active && focus) t.focus();
+    });
+    Object.entries(panels).forEach(([key, panel]) => {
+      const active = key === name;
+      panel.classList.toggle('is-active', active);
+      panel.hidden = !active;
+    });
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => selectTab(tab.dataset.tab));
+    tab.addEventListener('keydown', (e) => {
+      let target = null;
+      if (e.key === 'ArrowRight') target = tabs[(i + 1) % tabs.length];
+      else if (e.key === 'ArrowLeft') target = tabs[(i - 1 + tabs.length) % tabs.length];
+      else if (e.key === 'Home') target = tabs[0];
+      else if (e.key === 'End') target = tabs[tabs.length - 1];
+      if (target) { e.preventDefault(); selectTab(target.dataset.tab, true); }
+    });
+  });
+
+  document.querySelectorAll('[data-goto]').forEach((btn) => {
+    btn.addEventListener('click', () => selectTab(btn.dataset.goto, true));
+  });
+
+  /* ---------- Brand filter ---------- */
+  const chips = Array.from(document.querySelectorAll('.chip'));
+  const marks = Array.from(document.querySelectorAll('.wm'));
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      const f = chip.dataset.filter;
+      marks.forEach((m) => {
+        m.classList.toggle('is-hidden', f !== 'all' && !m.dataset.cat.split(' ').includes(f));
+      });
+    });
+  });
+
+  /* ---------- Estimator ---------- */
+  const BASE = {
+    'tv-s': [40, 120], 'tv-m': [60, 180], 'tv-l': [90, 260],
+    'soundbar': [40, 110], 'ampli': [60, 190], 'speakers': [35, 120], 'pro': [80, 240],
+  };
+  const FACTOR = {
+    'no-enciende': 1.0, 'imagen': 1.35, 'sonido': 1.0,
+    'conector': 0.8, 'software': 0.55, 'mantenimiento': 0.7,
+  };
+  const selEquipo = document.getElementById('f-equipo');
+  const selProblema = document.getElementById('f-problema');
+  const outAmount = document.getElementById('estimate-amount');
+
+  function round5(n) { return Math.max(25, Math.round(n / 5) * 5); }
+  function updateEstimate() {
+    const base = BASE[selEquipo.value];
+    const k = FACTOR[selProblema.value];
+    outAmount.textContent = round5(base[0] * k) + ' – ' + round5(base[1] * k) + ' €';
+  }
+  selEquipo.addEventListener('change', updateEstimate);
+  selProblema.addEventListener('change', updateEstimate);
+  updateEstimate();
+
+  /* ---------- Form + toast ---------- */
+  const toast = document.getElementById('toast');
+  let toastTimer = null;
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 4200);
+  }
+  document.getElementById('contact-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nombre = document.getElementById('f-nombre').value.trim();
+    const tel = document.getElementById('f-tel').value.trim();
+    if (!nombre || !tel) {
+      showToast('Falta tu nombre o teléfono: los necesitamos para llamarte.');
+      return;
+    }
+    e.target.reset();
+    updateEstimate();
+    showToast('Solicitud registrada. Te llamamos en menos de 24 h laborables.');
+  });
+
+  /* ---------- Oscilloscope canvas ---------- */
+  const canvas = document.getElementById('scope-canvas');
+  const ctx = canvas.getContext('2d');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function cssVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function sizeCanvas() {
+    const dpr = window.devicePixelRatio || 1;
+    const w = canvas.clientWidth || canvas.parentElement.clientWidth;
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(140 * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function drawScope(t) {
+    const w = canvas.clientWidth;
+    const h = 140;
+    ctx.clearRect(0, 0, w, h);
+
+    // grid
+    ctx.strokeStyle = cssVar('--line');
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let x = 0; x <= w; x += 40) { ctx.moveTo(x + 0.5, 0); ctx.lineTo(x + 0.5, h); }
+    for (let y = 0; y <= h; y += 35) { ctx.moveTo(0, y + 0.5); ctx.lineTo(w, y + 0.5); }
+    ctx.stroke();
+
+    // channel B (dim)
+    ctx.strokeStyle = cssVar('--trace-2');
+    ctx.lineWidth = 1.4;
+    ctx.beginPath();
+    for (let x = 0; x <= w; x += 2) {
+      const y = h / 2
+        + Math.sin(x * 0.045 + t * 0.0011) * 18
+        + Math.sin(x * 0.011 - t * 0.0007) * 10;
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // channel A (accent)
+    ctx.strokeStyle = cssVar('--accent');
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let x = 0; x <= w; x += 2) {
+      const y = h / 2
+        + Math.sin(x * 0.03 + t * 0.0016) * 30
+        + Math.sin(x * 0.09 + t * 0.0009) * 8;
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  let rafId = null;
+  function loop(t) { drawScope(t); rafId = requestAnimationFrame(loop); }
+  function startScope() {
+    sizeCanvas();
+    if (rafId) cancelAnimationFrame(rafId);
+    if (reduceMotion.matches) { drawScope(0); rafId = null; }
+    else { rafId = requestAnimationFrame(loop); }
+  }
+  window.addEventListener('resize', startScope);
+  reduceMotion.addEventListener('change', startScope);
+  startScope();
+</script>
+
+</body>
+</html>
