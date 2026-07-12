@@ -60,10 +60,9 @@
     padding: 0 24px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 24px;
+    gap: 20px;
     min-height: 64px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
   .brand { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
   .brand-logo {
@@ -73,7 +72,8 @@
     display: block;
     transition: width 250ms ease, height 250ms ease, border-radius 250ms ease;
   }
-  .brand-text { display: flex; align-items: baseline; gap: 10px; }
+  .brand-text { display: flex; flex-direction: column; align-items: flex-start; }
+  .brand-text .brand-sub { margin-top: -3px; white-space: nowrap; }
   .brand-name {
     font-size: 26px;
     font-weight: 800;
@@ -98,13 +98,18 @@
   .site-header.is-scrolled .brand-logo { width: 32px; height: 32px; border-radius: 6px; }
   .site-header.is-scrolled .brand-name { font-size: 13px; }
   .site-header.is-scrolled .brand-sub { display: none; }
-  .header-right { display: flex; align-items: center; gap: 24px; }
+  .header-right { display: flex; align-items: center; gap: 24px; flex: none; }
   .header-phone {
     font-size: 14px;
+    font-weight: 500;
     color: var(--ink);
     white-space: nowrap;
   }
   .header-phone:hover { color: var(--blue); text-decoration: none; }
+  @media (max-width: 760px) {
+    .brand-text .brand-sub { display: none; }
+    .brand-name { font-size: 20px; }
+  }
 
   /* ---------- Nav de pestañas (estilo nav horizontal Technics) ---------- */
   .tabbar {
@@ -112,6 +117,9 @@
     gap: 4px;
     overflow-x: auto;
     scrollbar-width: none;
+    flex: 0 1 auto;
+    min-width: 0;
+    margin-left: auto;
   }
   .tab {
     flex: none;
@@ -617,7 +625,7 @@
       <button class="tab" id="tab-contacto" role="tab" aria-selected="false" aria-controls="panel-contacto" tabindex="-1" data-tab="contacto">Dónde encontrarnos</button>
     </nav>
     <div class="header-right">
-      <a class="header-phone num" href="tel:+56220000000">+56 2 2000 0000</a>
+      <a class="header-phone num" href="tel:+56990812134">+56 9 9081 2134</a>
     </div>
   </div>
 </header>
@@ -1073,8 +1081,8 @@
           <p class="box-sub">Visítanos o llámanos directamente.</p>
           <div class="data-rows">
             <div class="row"><span>Dirección</span><b>Av. Providencia 1234, Santiago</b></div>
-            <div class="row"><span>Teléfono</span><b class="num">+56 2 2000 0000</b></div>
-            <div class="row"><span>WhatsApp</span><b class="num">+56 9 6000 0000</b></div>
+            <div class="row"><span>Teléfono</span><b class="num">+56 9 9081 2134</b></div>
+            <div class="row"><span>WhatsApp</span><b class="num">+56 9 9081 2134</b></div>
             <div class="row"><span>Email</span><b>contacto@offixaudio.cl</b></div>
             <div class="row"><span>Lunes–Viernes</span><b class="num">9:00 – 19:00</b></div>
             <div class="row"><span>Sábado</span><b class="num">10:00 – 14:00</b></div>
