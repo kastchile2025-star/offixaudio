@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/png" href="img/logo.png">
 </head>
 <body>
 <title>OFFIXAUDIO · Servicio Técnico de TV y Audio</title>
@@ -64,13 +65,22 @@
     min-height: 64px;
     flex-wrap: wrap;
   }
-  .brand { display: flex; align-items: baseline; gap: 10px; padding: 10px 0; }
+  .brand { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
+  .brand-logo {
+    width: 46px;
+    height: 46px;
+    border-radius: 8px;
+    display: block;
+    transition: width 250ms ease, height 250ms ease, border-radius 250ms ease;
+  }
+  .brand-text { display: flex; align-items: baseline; gap: 10px; }
   .brand-name {
     font-size: 26px;
     font-weight: 800;
     font-style: italic;
     letter-spacing: -0.01em;
     color: var(--ink);
+    transition: font-size 250ms ease;
   }
   .brand-name b { color: var(--blue); font-weight: 800; }
   .brand-sub {
@@ -78,6 +88,16 @@
     color: var(--muted);
     letter-spacing: 0.04em;
   }
+  /* Al bajar, el logo y OFFIXAUDIO se fusionan: texto pequeño bajo el logo */
+  .site-header.is-scrolled .brand {
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    padding: 6px 0;
+  }
+  .site-header.is-scrolled .brand-logo { width: 32px; height: 32px; border-radius: 6px; }
+  .site-header.is-scrolled .brand-name { font-size: 13px; }
+  .site-header.is-scrolled .brand-sub { display: none; }
   .header-right { display: flex; align-items: center; gap: 24px; }
   .header-phone {
     font-size: 14px;
@@ -566,11 +586,14 @@
     padding: 0 24px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 16px;
     flex-wrap: wrap;
     font-size: 12px;
     color: var(--muted);
   }
+  .footer-brand { display: flex; align-items: center; gap: 12px; }
+  .footer-brand img { width: 34px; height: 34px; border-radius: 6px; display: block; }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition: none !important; animation: none !important; }
@@ -580,8 +603,11 @@
 <header class="site-header">
   <div class="header-in">
     <div class="brand">
-      <span class="brand-name">OFFIX<b>AUDIO</b></span>
-      <span class="brand-sub">Servicio Técnico de TV y Audio</span>
+      <img class="brand-logo" src="img/logo.png" alt="Logotipo de OFFIXAUDIO" />
+      <div class="brand-text">
+        <span class="brand-name">OFFIX<b>AUDIO</b></span>
+        <span class="brand-sub">Servicio Técnico de TV y Audio</span>
+      </div>
     </div>
     <nav class="tabbar" role="tablist" aria-label="Secciones del sitio">
       <button class="tab" id="tab-inicio" role="tab" aria-selected="true" aria-controls="panel-inicio" data-tab="inicio">Inicio</button>
@@ -1069,7 +1095,10 @@
 
 <footer class="site-footer">
   <div class="footer-in">
-    <span>© OFFIXAUDIO 2026 · Servicio técnico audiovisual independiente</span>
+    <div class="footer-brand">
+      <img src="img/logo.png" alt="" />
+      <span>© OFFIXAUDIO 2026 · Servicio técnico audiovisual independiente</span>
+    </div>
     <span>Las marcas citadas pertenecen a sus respectivos propietarios. Fotografías: Wikimedia Commons (CC BY / CC BY-SA), créditos en <a href="https://github.com/kastchile2025-star/offixaudio/blob/main/CREDITS.md">CREDITS.md</a>.</span>
   </div>
 </footer>
@@ -1124,6 +1153,14 @@
   document.querySelectorAll('[data-goto]').forEach((btn) => {
     btn.addEventListener('click', () => selectTab(btn.dataset.goto, true));
   });
+
+  /* ---------- Header: fusión del logo al hacer scroll ---------- */
+  const siteHeader = document.querySelector('.site-header');
+  function onHeaderScroll() {
+    siteHeader.classList.toggle('is-scrolled', window.scrollY > 40);
+  }
+  window.addEventListener('scroll', onHeaderScroll, { passive: true });
+  onHeaderScroll();
 
   /* ---------- Carrusel del hero ---------- */
   const carTrack = document.getElementById('car-track');
