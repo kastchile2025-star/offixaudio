@@ -6,25 +6,24 @@
 <link rel="icon" type="image/png" href="img/logo.png">
 </head>
 <body>
-<title>OFFIXAUDIO · Servicio Técnico de TV y Audio</title>
+<title>OFFIXAUDIO · Audio HiFi Vintage</title>
 <style>
-  /* ---------- Tokens (estética Technics: blanco, azul, negro, gris) ---------- */
+  /* ---------- Tokens: blanco, plomo, gris, negro + azul rey solo en la línea scanner ---------- */
   :root {
     --bg: #FFFFFF;
-    --zone: #F5F5F5;
-    --ink: #1A1A1A;
-    --muted: #666666;
-    --line: #CCCCCC;
-    --line-soft: #E4E4E4;
-    --blue: #0057B8;
-    --blue-dark: #003E86;
-    --hero-bg: #101316;
-    --shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    --zone: #F2F2F2;
+    --ink: #161616;
+    --muted: #6A6A6A;
+    --line: #D9D9D9;
+    --line-soft: #E6E6E6;
+    --scan: #2743F0;
+    --hero-bg: #101010;
+    --wsp: #1EBE57;
+    --shadow: 0 2px 12px rgba(0, 0, 0, 0.10);
 
     --font-body: Roboto, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
 
-  /* Diseño de una sola apariencia, fiel al blanco de technics.com */
   * { box-sizing: border-box; }
   body {
     margin: 0;
@@ -38,22 +37,20 @@
   }
   h1, h2, h3 { margin: 0; font-weight: 400; line-height: 1.2; text-wrap: balance; }
   p { margin: 0; max-width: 68ch; }
-  a { color: var(--blue); text-decoration: none; }
-  a:hover { text-decoration: underline; }
+  a { color: var(--ink); }
   button { font: inherit; color: inherit; cursor: pointer; background: none; border: none; padding: 0; }
-  :focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
   .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
   .bleed { width: 100vw; margin-left: calc(50% - 50vw); }
   .num { font-variant-numeric: tabular-nums; }
 
-  /* ---------- Header (barra blanca, logo + nav horizontal) ---------- */
+  /* ---------- Header ---------- */
   .site-header {
     position: sticky;
     top: 0;
     z-index: 30;
     background: var(--bg);
-    border-bottom: 1px solid var(--line-soft);
   }
   .header-in {
     max-width: 1080px;
@@ -83,13 +80,12 @@
     color: var(--ink);
     transition: font-size 250ms ease;
   }
-  .brand-name b { color: var(--blue); font-weight: 800; }
+  .brand-name b { color: var(--muted); font-weight: 800; }
   .brand-sub {
     font-size: 11px;
     color: var(--muted);
     letter-spacing: 0.04em;
   }
-  /* Al bajar, el logo y OFFIXAUDIO se fusionan: texto pequeño bajo el logo */
   .site-header.is-scrolled .brand {
     flex-direction: column;
     align-items: center;
@@ -105,23 +101,33 @@
     font-weight: 500;
     color: var(--ink);
     white-space: nowrap;
+    text-decoration: none;
   }
-  .header-phone:hover { color: var(--blue); text-decoration: none; }
-  @media (max-width: 760px) {
-    .header-in { flex-wrap: wrap; gap: 0 12px; padding: 4px 16px 0; min-height: 0; }
-    .brand { order: 1; padding: 6px 0; gap: 10px; }
-    .brand-logo { width: 38px; height: 38px; }
-    .brand-text .brand-sub { display: none; }
-    .brand-name { font-size: 20px; }
-    .header-right { order: 2; margin-left: auto; }
-    .header-phone { font-size: 13px; }
-    .tabbar { order: 3; flex-basis: 100%; margin-left: 0; gap: 0; }
-    .tab { padding: 10px 12px 8px; font-size: 14px; }
-    .site-header.is-scrolled .brand-logo { width: 28px; height: 28px; }
-    .site-header.is-scrolled .brand-name { font-size: 12px; }
+  .header-phone:hover { text-decoration: underline; }
+
+  /* Línea scanner azul rey bajo el header */
+  .scanline {
+    height: 3px;
+    background: var(--line-soft);
+    position: relative;
+    overflow: hidden;
+  }
+  .scanline::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -180px;
+    width: 180px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--scan) 35%, #7C8DFF 50%, var(--scan) 65%, transparent);
+    animation: scan-sweep 3.6s ease-in-out infinite alternate;
+  }
+  @keyframes scan-sweep { to { left: 100%; } }
+  @media (prefers-reduced-motion: reduce) {
+    .scanline::after { animation: none; left: calc(50% - 90px); }
   }
 
-  /* ---------- Nav de pestañas (estilo nav horizontal Technics) ---------- */
+  /* ---------- Nav ---------- */
   .tabbar {
     display: flex;
     gap: 4px;
@@ -138,148 +144,91 @@
     font-weight: 500;
     color: var(--ink);
     border-bottom: 3px solid transparent;
-    transition: color 120ms ease, border-color 120ms ease;
+    transition: border-color 120ms ease, color 120ms ease;
     white-space: nowrap;
   }
-  .tab:hover { color: var(--blue); }
-  .tab[aria-selected="true"] { color: var(--blue); border-bottom-color: var(--blue); }
+  .tab:hover { color: #000; border-bottom-color: var(--line); }
+  .tab[aria-selected="true"] { color: #000; border-bottom-color: var(--ink); }
 
-  /* ---------- Botones (btn-style de Technics) ---------- */
+  /* ---------- Botones ---------- */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    min-width: 180px;
+    min-width: 170px;
     padding: 12px 28px;
-    background: var(--blue);
+    background: var(--ink);
     color: #FFFFFF;
     font-size: 15px;
     font-weight: 500;
-    border: 1px solid var(--blue);
+    border: 1px solid var(--ink);
     border-radius: 2px;
     text-decoration: none;
-    transition: background 120ms ease, border-color 120ms ease;
+    transition: background 120ms ease;
   }
-  .btn:hover { background: var(--blue-dark); border-color: var(--blue-dark); text-decoration: none; }
-  .btn.ghost {
-    background: transparent;
-    color: #FFFFFF;
-    border-color: rgba(255, 255, 255, 0.75);
-  }
+  .btn:hover { background: #000; }
+  .btn.ghost { background: transparent; color: #FFFFFF; border-color: rgba(255, 255, 255, 0.75); }
   .btn.ghost:hover { background: rgba(255, 255, 255, 0.12); }
-  .btn.ghost-dark { background: transparent; color: var(--blue); border-color: var(--line); }
-  .btn.ghost-dark:hover { background: var(--zone); border-color: var(--blue); }
 
   /* ---------- Paneles ---------- */
   .panel { display: none; padding-bottom: 72px; }
   .panel.is-active { display: block; }
-
-  /* ---------- Título de sección (sectiontitle Technics) ---------- */
   .section-title {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: 16px;
-    padding: 52px 0 26px;
+    padding: 52px 0 24px;
     flex-wrap: wrap;
   }
-  .section-title h2 { font-size: 30px; font-weight: 400; color: var(--ink); }
-  .section-title .st-link { font-size: 14px; white-space: nowrap; }
-  .section-title .st-link::after { content: " ›"; }
-  .section-lead { color: var(--muted); margin-top: -12px; margin-bottom: 8px; }
+  .section-title h2 { font-size: 30px; font-weight: 400; }
+  .section-title .st-link { font-size: 14px; color: var(--ink); text-decoration: underline; white-space: nowrap; }
+  .section-lead { color: var(--muted); margin-top: -10px; }
 
-  /* ---------- Hero (keyvisual oscuro con copy blanco) ---------- */
+  /* ---------- Hero carrusel ---------- */
   .hero {
     position: relative;
-    background: linear-gradient(115deg, #0B0E11 0%, #14181D 55%, #1A2027 100%);
+    background: linear-gradient(115deg, #0B0B0B 0%, #131313 55%, #1B1B1B 100%);
     color: #FFFFFF;
     overflow: hidden;
   }
-  .hero canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-    opacity: 0.85;
-  }
-  .hero-copy {
-    position: relative;
-    max-width: 1080px;
-    margin: 0 auto;
-    padding: 96px 24px 104px;
-  }
-  .hero-copy .eyebrow {
-    font-size: 13px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.65);
-  }
-  .hero-copy h1 {
-    font-size: clamp(30px, 4.6vw, 46px);
-    font-weight: 300;
-    max-width: 22ch;
-    margin-top: 14px;
-    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
-  }
-  .hero-copy .hero-sub {
-    margin-top: 16px;
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.78);
-    max-width: 52ch;
-  }
-  .hero-ctas { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; }
-
-  /* ---------- Carrusel del hero (keyvisual con dots) ---------- */
-  .car-track {
-    display: flex;
-    transition: transform 550ms ease;
-    position: relative;
-  }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0.5; }
+  .car-track { display: flex; transition: transform 550ms ease; position: relative; }
   .car-slide { flex: 0 0 100%; min-width: 100%; }
   .car-slide-in {
     max-width: 1080px;
     margin: 0 auto;
-    padding: 64px 84px 96px;
+    padding: 56px 84px 92px;
     display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
+    grid-template-columns: 1fr 1fr;
     gap: 40px;
     align-items: center;
   }
   .car-copy .eyebrow {
-    font-size: 13px;
-    letter-spacing: 0.12em;
+    font-size: 12px;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(255, 255, 255, 0.60);
   }
   .car-copy .car-h {
     font-size: clamp(26px, 3.8vw, 40px);
     font-weight: 300;
     color: #FFFFFF;
-    max-width: 20ch;
+    max-width: 18ch;
     margin-top: 12px;
     text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
   }
-  .car-copy .hero-sub { margin-top: 14px; font-size: 15.5px; color: rgba(255, 255, 255, 0.78); }
+  .car-copy .hero-sub { margin-top: 14px; font-size: 15.5px; color: rgba(255, 255, 255, 0.75); }
+  .hero-ctas { display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
   .car-art { display: grid; place-items: center; }
   .car-art img {
     display: block;
     max-width: 100%;
-    max-height: 330px;
+    max-height: 300px;
     width: auto;
     border-radius: 4px;
     box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
-  }
-  @media (max-width: 760px) {
-    .car-slide-in { grid-template-columns: 1fr; padding: 34px 22px 100px; gap: 20px; }
-    .car-copy .car-h { font-size: 23px; }
-    .car-copy .hero-sub { font-size: 14px; }
-    .car-art img { max-height: 190px; }
-    .car-arrow { top: auto; bottom: 16px; transform: none; width: 38px; height: 38px; font-size: 20px; }
-    .car-arrow.prev { left: 18px; }
-    .car-arrow.next { right: 18px; }
-    .car-dots { bottom: 30px; }
   }
   .car-arrow {
     position: absolute;
@@ -318,105 +267,35 @@
   }
   .car-dot:hover { background: rgba(255, 255, 255, 0.5); }
   .car-dot[aria-current="true"] { background: #FFFFFF; }
-
-  /* ---------- Cinta de marcas (marquee) ---------- */
-  .marquee {
-    overflow: hidden;
-    padding: 10px 0 6px;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
-  }
-  .marquee-track {
-    display: flex;
-    width: max-content;
-    animation: mq-scroll 48s linear infinite;
-  }
-  .marquee:hover .marquee-track { animation-play-state: paused; }
-  .mq-group { display: flex; align-items: center; gap: 72px; padding-right: 72px; }
-  .mq-item { white-space: nowrap; color: #70777E; flex: none; }
-  @keyframes mq-scroll { to { transform: translateX(-50%); } }
-  @media (prefers-reduced-motion: reduce) {
-    .marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  @media (max-width: 760px) {
+    .car-slide-in { grid-template-columns: 1fr; padding: 32px 22px 100px; gap: 18px; }
+    .car-copy .car-h { font-size: 23px; }
+    .car-copy .hero-sub { font-size: 14px; }
+    .car-art img { max-height: 180px; }
+    .car-arrow { top: auto; bottom: 16px; transform: none; width: 38px; height: 38px; font-size: 20px; }
+    .car-arrow.prev { left: 18px; }
+    .car-arrow.next { right: 18px; }
+    .car-dots { bottom: 30px; }
   }
 
-  /* ---------- Mosaico de paneles (visualpanels Technics) ---------- */
-  .vp-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
+  /* ---------- Intro / especialidad ---------- */
+  .intro { padding-top: 52px; }
+  .intro h2 { font-size: clamp(24px, 3.4vw, 34px); max-width: 26ch; }
+  .intro p { color: var(--muted); margin-top: 14px; }
+  .badge-technics {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+    padding: 10px 18px;
+    background: var(--ink);
+    border-radius: 2px;
   }
-  .vp-item {
-    grid-column: span 1;
-    background: var(--bg);
-    border: 1px solid var(--line-soft);
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    transition: box-shadow 140ms ease;
-  }
-  .vp-item:hover { box-shadow: var(--shadow); }
-  .vp-item.big { grid-column: span 2; grid-row: span 2; }
-  .vp-tx { padding: 18px 20px 14px; border-bottom: 1px solid var(--line); }
-  .vp-tx h3 { font-size: 18px; font-weight: 500; }
-  .vp-item.big .vp-tx h3 { font-size: 22px; }
-  .vp-tx .vp-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
-  .vp-img { flex: 1; display: block; overflow: hidden; }
-  .vp-img img { width: 100%; height: 185px; object-fit: cover; display: block; }
-  .vp-item.big .vp-img { min-height: 340px; }
-  .vp-item.big .vp-img img { height: 100%; min-height: 340px; }
-  .vp-more { padding: 0 20px 16px; font-size: 13px; color: var(--blue); }
-  .vp-more::after { content: " ›"; }
-  @media (max-width: 820px) {
-    .vp-grid { grid-template-columns: repeat(2, 1fr); }
-    .vp-item.big { grid-column: span 2; grid-row: auto; }
-  }
-  @media (max-width: 480px) {
-    .vp-grid { grid-template-columns: 1fr; }
-    .vp-item.big { grid-column: span 1; }
-  }
+  .badge-technics img { height: 22px; display: block; }
+  .badge-technics span { color: #FFFFFF; font-size: 13px; letter-spacing: 0.04em; }
 
-  /* ---------- Zona gris (bg-light Technics) ---------- */
-  .zone { background: var(--zone); padding: 8px 0 56px; }
-  .zone .section-title { padding-top: 44px; }
-
-  /* ---------- Cifras ---------- */
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: 14px;
-  }
-  .stat {
-    background: var(--bg);
-    border: 1px solid var(--line-soft);
-    padding: 22px 24px;
-  }
-  .stat .stat-label { font-size: 12px; color: var(--muted); }
-  .stat b {
-    display: block;
-    font-size: 34px;
-    font-weight: 300;
-    margin-top: 6px;
-    color: var(--ink);
-  }
-  .stat b i { font-style: normal; font-size: 18px; color: var(--blue); }
-
-  /* ---------- Pasos ---------- */
-  .steps-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 14px;
-  }
-  .step { background: var(--bg); border: 1px solid var(--line-soft); padding: 22px 24px; }
-  .step .step-n { font-size: 12px; font-weight: 500; color: var(--blue); }
-  .step h3 { font-size: 17px; font-weight: 500; margin-top: 8px; }
-  .step p { font-size: 13.5px; color: var(--muted); margin-top: 8px; }
-
-  /* ---------- Tarjetas de servicio ---------- */
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 14px;
-  }
+  /* ---------- Tarjetas ---------- */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; }
   .card {
     background: var(--bg);
     border: 1px solid var(--line-soft);
@@ -431,23 +310,179 @@
   .card p { font-size: 13.5px; color: var(--muted); flex: 1; }
   .card .price {
     font-size: 14px;
-    font-weight: 500;
-    color: var(--blue);
+    font-weight: 600;
+    color: var(--ink);
     border-top: 1px solid var(--line-soft);
     padding-top: 12px;
   }
-
   .note {
-    margin-top: 28px;
+    margin-top: 24px;
     padding: 18px 22px;
     background: var(--zone);
-    border-left: 3px solid var(--blue);
+    border-left: 3px solid var(--ink);
     font-size: 13.5px;
     color: var(--muted);
     max-width: 76ch;
   }
+  .note b { color: var(--ink); }
 
-  /* ---------- FAQ ---------- */
+  /* ---------- Mosaico de equipos (hover: zoom + colores vivos) ---------- */
+  .vp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .vp-item {
+    grid-column: span 1;
+    background: var(--bg);
+    border: 1px solid var(--line-soft);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: box-shadow 160ms ease, transform 160ms ease;
+  }
+  .vp-item:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+  .vp-item.big { grid-column: span 2; grid-row: span 2; }
+  .vp-tx { padding: 16px 20px 12px; border-bottom: 1px solid var(--line); }
+  .vp-tx h3 { font-size: 17px; font-weight: 500; }
+  .vp-item.big .vp-tx h3 { font-size: 21px; }
+  .vp-tx .vp-label { font-size: 12px; color: var(--muted); margin-top: 3px; display: block; }
+  .vp-img { flex: 1; display: block; overflow: hidden; }
+  .vp-img img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.55);
+    transition: transform 220ms ease, filter 220ms ease;
+  }
+  .vp-item.big .vp-img { min-height: 330px; }
+  .vp-item.big .vp-img img { height: 100%; min-height: 330px; }
+  .vp-item:hover .vp-img img { transform: scale(1.05); filter: saturate(1.15); }
+  .vp-more { padding: 10px 20px 14px; font-size: 13px; color: var(--ink); text-decoration: underline; }
+  @media (max-width: 820px) {
+    .vp-grid { grid-template-columns: repeat(2, 1fr); }
+    .vp-item.big { grid-column: span 2; grid-row: auto; }
+  }
+  @media (max-width: 480px) { .vp-grid { grid-template-columns: 1fr; } .vp-item.big { grid-column: span 1; } }
+
+  /* ---------- Zona gris ---------- */
+  .zone { background: var(--zone); padding: 8px 0 52px; }
+  .zone .section-title { padding-top: 42px; }
+
+  /* ---------- Pasos ---------- */
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .step { background: var(--bg); border: 1px solid var(--line-soft); padding: 22px 24px; }
+  .step .step-n { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 0.08em; }
+  .step h3 { font-size: 17px; font-weight: 500; margin-top: 8px; }
+  .step p { font-size: 13.5px; color: var(--muted); margin-top: 8px; }
+
+  /* ---------- Marquesinas de logos ---------- */
+  .marquee {
+    overflow: hidden;
+    padding: 14px 0 10px;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  }
+  .marquee-track { display: flex; width: max-content; animation: mq-scroll 40s linear infinite; }
+  .marquee.rev .marquee-track { animation-direction: reverse; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .mq-group { display: flex; align-items: center; gap: 64px; padding-right: 64px; }
+  .mq-item { white-space: nowrap; flex: none; display: flex; align-items: center; }
+  .mq-item img {
+    height: 30px;
+    width: auto;
+    display: block;
+    filter: grayscale(1) opacity(0.72);
+    transition: filter 180ms ease;
+  }
+  .mq-item:hover img { filter: none; }
+  .mq-item.mq-text { font-weight: 800; font-size: 21px; letter-spacing: 0.06em; color: #7A7A7A; transition: color 180ms ease; }
+  .mq-item.mq-text:hover { color: var(--ink); }
+  @keyframes mq-scroll { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  }
+
+  /* ---------- Equipos (bloques) ---------- */
+  .eq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+  .eq-block {
+    background: var(--bg);
+    border: 1px solid var(--line-soft);
+    padding: 22px 24px;
+    scroll-margin-top: 130px;
+  }
+  .eq-block h3 { font-size: 18px; font-weight: 500; }
+  .eq-block p { font-size: 13.5px; color: var(--muted); margin-top: 8px; }
+
+  /* ---------- Marcas / componentes: grillas de logos ---------- */
+  .brand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+  .wm {
+    position: relative;
+    border: 1px solid var(--line-soft);
+    background: var(--bg);
+    min-height: 110px;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    transition: box-shadow 160ms ease;
+  }
+  .wm:hover { box-shadow: var(--shadow); }
+  .wm img {
+    max-width: 78%;
+    max-height: 44px;
+    width: auto;
+    filter: grayscale(1) opacity(0.75);
+    transition: filter 200ms ease, transform 200ms ease;
+  }
+  .wm:hover img { filter: none; transform: scale(1.06); }
+  .wm.wm-text { font-weight: 800; font-size: 23px; letter-spacing: 0.06em; color: #7A7A7A; transition: color 200ms ease; }
+  .wm.wm-text:hover { color: var(--ink); }
+  .wm .spec-tag {
+    position: absolute;
+    top: -1px; left: -1px;
+    background: var(--ink);
+    color: #FFFFFF;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+  }
+
+  /* ---------- Contacto ---------- */
+  .contact-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 800px) { .contact-grid { grid-template-columns: 1fr; } }
+  .panel-box { border: 1px solid var(--line-soft); background: var(--bg); padding: 28px; }
+  .panel-box h3 { font-size: 19px; font-weight: 500; margin-bottom: 4px; }
+  .panel-box .box-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+  .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+  .field label { font-size: 12.5px; font-weight: 500; }
+  .field input, .field select, .field textarea {
+    font: inherit;
+    font-size: 14.5px;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 11px 12px;
+    width: 100%;
+  }
+  .field textarea { resize: vertical; min-height: 90px; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--ink); outline-offset: -1px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
+  .data-rows { display: flex; flex-direction: column; }
+  .data-rows .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 14px;
+  }
+  .data-rows .row:last-child { border-bottom: none; }
+  .data-rows .row b { font-weight: 500; text-align: right; }
+  .qr-box { text-align: center; }
+  .qr-box img { width: 150px; height: 150px; display: inline-block; border: 1px solid var(--line-soft); }
+  .qr-box p { font-size: 12.5px; color: var(--muted); margin: 10px auto 0; }
+
   details.faq { border: 1px solid var(--line-soft); background: var(--bg); margin-top: -1px; }
   details.faq summary {
     padding: 16px 22px;
@@ -461,128 +496,43 @@
     gap: 12px;
   }
   details.faq summary::-webkit-details-marker { display: none; }
-  details.faq summary::after { content: "+"; color: var(--blue); font-size: 20px; font-weight: 300; }
+  details.faq summary::after { content: "+"; font-size: 20px; font-weight: 300; color: var(--muted); }
   details.faq[open] summary::after { content: "–"; }
   details.faq .faq-body { padding: 0 22px 18px; font-size: 13.5px; color: var(--muted); }
 
-  /* ---------- Banco de pruebas / datos ---------- */
-  .data-rows { display: flex; flex-direction: column; }
-  .data-rows .row {
+  /* ---------- Botón flotante WhatsApp (esquina inferior derecha) ---------- */
+  .wsp-float {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 40;
     display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--line-soft);
-    font-size: 14px;
-  }
-  .data-rows .row:last-child { border-bottom: none; }
-  .data-rows .row b { font-weight: 500; text-align: right; }
-
-  /* ---------- Marcas ---------- */
-  .filter-row { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
-  .chip {
-    padding: 9px 22px;
-    border: 1px solid var(--line);
-    border-radius: 2px;
-    background: var(--bg);
-    font-size: 13.5px;
-    color: var(--ink);
-    transition: all 120ms ease;
-  }
-  .chip:hover { border-color: var(--blue); color: var(--blue); }
-  .chip[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #FFFFFF; }
-  .brand-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-    gap: 14px;
-  }
-  .wm {
-    border: 1px solid var(--line-soft);
-    background: var(--bg);
-    min-height: 108px;
-    display: grid;
-    place-items: center;
-    padding: 16px;
-    color: #4A4F55;
-    transition: color 140ms ease, box-shadow 140ms ease;
-    text-align: center;
-    position: relative;
-  }
-  .wm:hover { color: var(--ink); box-shadow: var(--shadow); }
-  .wm .cat {
-    position: absolute;
-    top: 8px; right: 12px;
-    font-size: 9px;
-    letter-spacing: 0.12em;
-    color: var(--muted);
-  }
-  .wm.is-hidden { display: none; }
-  .wm-samsung  { font-weight: 700; font-size: 22px; }
-  .wm-lg       { font-weight: 800; font-size: 26px; letter-spacing: 0.12em; }
-  .wm-sony     { font-family: Georgia, serif; font-weight: 700; font-size: 22px; letter-spacing: 0.14em; }
-  .wm-tcl      { font-weight: 800; font-style: italic; font-size: 24px; letter-spacing: 0.06em; }
-  .wm-hisense  { font-weight: 500; font-size: 19px; letter-spacing: 0.2em; }
-  .wm-philips  { font-weight: 400; font-size: 17px; letter-spacing: 0.3em; }
-  .wm-panasonic{ font-weight: 700; font-size: 17px; letter-spacing: 0.1em; }
-  .wm-xiaomi   { font-weight: 600; font-size: 20px; letter-spacing: 0.16em; }
-  .wm-bose     { font-weight: 900; font-size: 26px; letter-spacing: 0.08em; }
-  .wm-jbl      { font-weight: 900; font-style: italic; font-size: 26px; }
-  .wm-yamaha   { font-weight: 300; font-size: 19px; letter-spacing: 0.32em; }
-  .wm-denon    { font-family: Georgia, serif; font-weight: 700; font-size: 21px; letter-spacing: 0.2em; }
-  .wm-marantz  { font-weight: 300; font-size: 21px; letter-spacing: 0.22em; text-transform: lowercase; }
-  .wm-pioneer  { font-weight: 700; font-style: italic; font-size: 22px; }
-  .wm-harman   { font-weight: 300; font-size: 16px; letter-spacing: 0.14em; text-transform: lowercase; }
-  .wm-sonos    { font-weight: 500; font-size: 20px; letter-spacing: 0.28em; }
-  .wm-bo       { font-family: Georgia, serif; font-weight: 400; font-size: 15px; letter-spacing: 0.24em; }
-  .wm-technics { font-weight: 800; font-style: italic; font-size: 21px; }
-
-  /* ---------- Contacto ---------- */
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 20px;
-    align-items: start;
-  }
-  @media (max-width: 800px) { .contact-grid { grid-template-columns: 1fr; } }
-  .panel-box { border: 1px solid var(--line-soft); background: var(--bg); padding: 28px; }
-  .panel-box h3 { font-size: 19px; font-weight: 500; margin-bottom: 4px; }
-  .panel-box .box-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
-  .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
-  .field label { font-size: 12.5px; font-weight: 500; color: var(--ink); }
-  .field input, .field select, .field textarea {
-    font: inherit;
+    align-items: center;
+    gap: 10px;
+    background: var(--wsp);
+    color: #FFFFFF;
+    text-decoration: none;
+    padding: 13px 20px;
+    border-radius: 40px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    font-weight: 600;
     font-size: 14.5px;
-    color: var(--ink);
-    background: var(--bg);
-    border: 1px solid var(--line);
-    border-radius: 2px;
-    padding: 11px 12px;
-    width: 100%;
+    transition: transform 140ms ease, box-shadow 140ms ease;
   }
-  .field textarea { resize: vertical; min-height: 90px; }
-  .field input:focus, .field select:focus, .field textarea:focus {
-    outline: 2px solid var(--blue);
-    outline-offset: -1px;
-  }
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  @media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
+  .wsp-float:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0, 0, 0, 0.3); }
+  .wsp-float svg { width: 22px; height: 22px; flex: none; }
+  @media (max-width: 700px) { .wsp-float span { display: none; } .wsp-float { padding: 13px; } }
 
-  .estimate-out { margin-top: 4px; background: var(--zone); padding: 20px 22px; }
-  .estimate-out .est-label { font-size: 12px; color: var(--muted); }
-  .estimate-out .amount { font-size: 32px; font-weight: 300; color: var(--blue); line-height: 1.15; margin-top: 4px; }
-  .estimate-out .fine { font-size: 12px; color: var(--muted); margin-top: 8px; }
-
-  /* ---------- Toast ---------- */
+  /* ---------- Toast / footer ---------- */
   .toast {
     position: fixed;
     left: 50%;
-    bottom: 28px;
+    bottom: 90px;
     transform: translate(-50%, 16px);
     background: var(--ink);
     color: #FFFFFF;
     padding: 14px 24px;
     font-size: 13.5px;
-    border-left: 3px solid var(--blue);
     border-radius: 2px;
     opacity: 0;
     pointer-events: none;
@@ -591,18 +541,9 @@
     z-index: 50;
   }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
-
-  /* ---------- Utilidades de enlaces + footer (linksutils / holdings-footer) ---------- */
-  .links-utils {
-    border-top: 1px solid var(--line-soft);
-    margin-top: 56px;
-    padding: 22px 0;
-    display: flex;
-    gap: 32px;
-    flex-wrap: wrap;
-  }
-  .links-utils button { font-size: 14px; color: var(--ink); }
-  .links-utils button:hover { color: var(--blue); }
+  .links-utils { border-top: 1px solid var(--line-soft); margin-top: 56px; padding: 22px 0; display: flex; gap: 32px; flex-wrap: wrap; }
+  .links-utils button { font-size: 14px; }
+  .links-utils button:hover { text-decoration: underline; }
   footer.site-footer { border-top: 1px solid var(--line-soft); background: var(--bg); padding: 26px 0 34px; }
   .footer-in {
     max-width: 1080px;
@@ -619,33 +560,36 @@
   .footer-brand { display: flex; align-items: center; gap: 12px; }
   .footer-brand img { width: 34px; height: 34px; border-radius: 6px; display: block; }
 
-  /* ---------- Ajustes generales para móvil ---------- */
+  /* ---------- Móvil ---------- */
+  @media (max-width: 760px) {
+    .header-in { flex-wrap: wrap; gap: 0 12px; padding: 4px 16px 0; min-height: 0; }
+    .brand { order: 1; padding: 6px 0; gap: 10px; }
+    .brand-logo { width: 38px; height: 38px; }
+    .brand-text .brand-sub { display: none; }
+    .brand-name { font-size: 20px; }
+    .header-right { order: 2; margin-left: auto; }
+    .header-phone { font-size: 13px; }
+    .tabbar { order: 3; flex-basis: 100%; margin-left: 0; gap: 0; }
+    .tab { padding: 10px 12px 8px; font-size: 14px; }
+    .site-header.is-scrolled .brand-logo { width: 28px; height: 28px; }
+    .site-header.is-scrolled .brand-name { font-size: 12px; }
+  }
   @media (max-width: 700px) {
     .wrap { padding: 0 16px; }
     .section-title { padding: 32px 0 18px; }
     .section-title h2 { font-size: 22px; }
     .section-lead { font-size: 14px; }
     .panel { padding-bottom: 48px; }
-    .stats { gap: 10px; }
-    .stat { padding: 16px 18px; }
-    .stat b { font-size: 26px; }
     .panel-box { padding: 20px 16px; }
-    .estimate-out .amount { font-size: 25px; }
     .data-rows .row { flex-wrap: wrap; row-gap: 2px; }
     .data-rows .row b { text-align: left; }
     .mq-group { gap: 44px; padding-right: 44px; }
     .btn { min-width: 0; padding: 12px 22px; font-size: 14px; }
     .note { padding: 14px 16px; font-size: 13px; }
-    .vp-item.big .vp-img, .vp-item.big .vp-img img { min-height: 230px; }
     .vp-tx { padding: 14px 16px 12px; }
-    .vp-tx h3 { font-size: 16px; }
-    .vp-item.big .vp-tx h3 { font-size: 18px; }
-    .vp-more { padding: 0 16px 14px; }
     .zone { padding: 4px 0 40px; }
-    .filter-row .chip { padding: 8px 16px; }
     .footer-in { justify-content: center; text-align: center; }
   }
-
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition: none !important; animation: none !important; }
   }
@@ -657,20 +601,21 @@
       <img class="brand-logo" src="img/logo.png" alt="Logotipo de OFFIXAUDIO" />
       <div class="brand-text">
         <span class="brand-name">OFFIX<b>AUDIO</b></span>
-        <span class="brand-sub">Servicio Técnico de TV y Audio</span>
+        <span class="brand-sub">Audio HiFi Vintage · Santiago</span>
       </div>
     </div>
     <nav class="tabbar" role="tablist" aria-label="Secciones del sitio">
       <button class="tab" id="tab-inicio" role="tab" aria-selected="true" aria-controls="panel-inicio" data-tab="inicio">Inicio</button>
-      <button class="tab" id="tab-tv" role="tab" aria-selected="false" aria-controls="panel-tv" tabindex="-1" data-tab="tv">Televisores</button>
-      <button class="tab" id="tab-audio" role="tab" aria-selected="false" aria-controls="panel-audio" tabindex="-1" data-tab="audio">Audio</button>
+      <button class="tab" id="tab-equipos" role="tab" aria-selected="false" aria-controls="panel-equipos" tabindex="-1" data-tab="equipos">Equipos</button>
+      <button class="tab" id="tab-repuestos" role="tab" aria-selected="false" aria-controls="panel-repuestos" tabindex="-1" data-tab="repuestos">Repuestos</button>
       <button class="tab" id="tab-marcas" role="tab" aria-selected="false" aria-controls="panel-marcas" tabindex="-1" data-tab="marcas">Marcas</button>
-      <button class="tab" id="tab-contacto" role="tab" aria-selected="false" aria-controls="panel-contacto" tabindex="-1" data-tab="contacto">Dónde encontrarnos</button>
+      <button class="tab" id="tab-contacto" role="tab" aria-selected="false" aria-controls="panel-contacto" tabindex="-1" data-tab="contacto">Contacto</button>
     </nav>
     <div class="header-right">
       <a class="header-phone num" href="tel:+56990812134">+56 9 9081 2134</a>
     </div>
   </div>
+  <div class="scanline" aria-hidden="true"></div>
 </header>
 
 <main class="wrap">
@@ -681,63 +626,87 @@
       <canvas id="scope-canvas"></canvas>
       <div class="car-track" id="car-track">
 
-        <!-- Diapositiva 1: giradiscos antiguo (siempre la primera) -->
         <div class="car-slide">
           <div class="car-slide-in">
             <div class="car-copy">
-              <p class="eyebrow">Restauración clásica</p>
-              <h1 class="car-h">Tu tocadiscos antiguo vuelve a girar como en su época</h1>
-              <p class="hero-sub">Cápsulas, agujas, brazos y motores. Velocidad estable y sonido de siempre, con garantía por escrito.</p>
-              <div class="hero-ctas"><button class="btn" data-goto="audio">Conozca más</button></div>
+              <p class="eyebrow">Mantención · Restauración · Reparación</p>
+              <h1 class="car-h">Tocadiscos y tornamesas</h1>
+              <p class="hero-sub">Velocidad estable, cambio de correas, cápsulas y agujas. Especialistas en Technics.</p>
+              <div class="hero-ctas"><button class="btn ghost" data-goto="equipos" data-anchor="eq-tocadiscos">Ver servicios</button></div>
             </div>
-            <div class="car-art">
-              <img src="img/tocadiscos.jpg" alt="Tocadiscos Technics SL-1200 original de 1972" />
-            </div>
+            <div class="car-art"><img src="img/tocadiscos.jpg" alt="Tocadiscos Technics SL-1200" /></div>
           </div>
         </div>
 
-        <!-- Diapositiva 2: televisores -->
         <div class="car-slide">
           <div class="car-slide-in">
             <div class="car-copy">
-              <p class="eyebrow">Servicio técnico especializado</p>
-              <h2 class="car-h">Reparación de televisores LED, OLED y QLED</h2>
-              <p class="hero-sub">Retroiluminación, placas main y T-CON, HDMI y calibración con sonda. De 24 a 98 pulgadas.</p>
-              <div class="hero-ctas"><button class="btn" data-goto="tv">Conozca más</button></div>
+              <p class="eyebrow">Mantención · Restauración · Reparación</p>
+              <h2 class="car-h">Amplificadores</h2>
+              <p class="hero-sub">Reparación a nivel de componente con partes 100 % originales, siempre nuevas.</p>
+              <div class="hero-ctas"><button class="btn ghost" data-goto="equipos" data-anchor="eq-amplificadores">Ver servicios</button></div>
             </div>
-            <div class="car-art">
-              <img src="img/televisor.jpg" alt="Televisor Samsung LED de pantalla plana" />
-            </div>
+            <div class="car-art"><img src="img/amplificador.jpg" alt="Amplificador Sansui 9090DB" /></div>
           </div>
         </div>
 
-        <!-- Diapositiva 3: amplificadores -->
         <div class="car-slide">
           <div class="car-slide-in">
             <div class="car-copy">
-              <p class="eyebrow">Hi-Fi y home theater</p>
-              <h2 class="car-h">Amplificadores y receivers, reparados a nivel de componente</h2>
-              <p class="hero-sub">Canal caído, protección activada, distorsión o zumbido. Medimos THD y potencia real antes de entregar.</p>
-              <div class="hero-ctas"><button class="btn" data-goto="audio">Conozca más</button></div>
+              <p class="eyebrow">Mantención · Restauración · Reparación</p>
+              <h2 class="car-h">Ecualizadores gráficos</h2>
+              <p class="hero-sub">Limpieza de faders, canales caídos y restauración completa de la sección de tono.</p>
+              <div class="hero-ctas"><button class="btn ghost" data-goto="equipos" data-anchor="eq-ecualizadores">Ver servicios</button></div>
             </div>
-            <div class="car-art">
-              <img src="img/amplificador.jpg" alt="Sistema Hi-Fi Revox de 1977 con magnetófono, sintonizador y amplificador" />
-            </div>
+            <div class="car-art"><img src="img/ecualizador.jpg" alt="Ecualizador gráfico Victor SEA-50" /></div>
           </div>
         </div>
 
-        <!-- Diapositiva 4: altavoces -->
         <div class="car-slide">
           <div class="car-slide-in">
             <div class="car-copy">
-              <p class="eyebrow">Altavoces y monitores</p>
-              <h2 class="car-h">Reconado de woofers y filtros de cruce como nuevos</h2>
-              <p class="hero-sub">Altavoces Hi-Fi, monitores de estudio activos y barras de sonido. Informe de medidas incluido.</p>
-              <div class="hero-ctas"><button class="btn" data-goto="audio">Conozca más</button></div>
+              <p class="eyebrow">Mantención · Restauración · Reparación</p>
+              <h2 class="car-h">Receivers</h2>
+              <p class="hero-sub">Sección de radio, iluminación de dial y etapas de potencia como salieron de fábrica.</p>
+              <div class="hero-ctas"><button class="btn ghost" data-goto="equipos" data-anchor="eq-receivers">Ver servicios</button></div>
             </div>
-            <div class="car-art">
-              <img src="img/altavoz.jpg" alt="Altavoz Hi-Fi Sansui SP-Z6 de 4 vías" />
+            <div class="car-art"><img src="img/receiver.jpg" alt="Receiver Sansui QRX-5500" /></div>
+          </div>
+        </div>
+
+        <div class="car-slide">
+          <div class="car-slide-in">
+            <div class="car-copy">
+              <p class="eyebrow">Mantención · Restauración · Reparación</p>
+              <h2 class="car-h">Casseteras</h2>
+              <p class="hero-sub">Correas, cabezales, azimut y mecanismos de transporte de cinta.</p>
+              <div class="hero-ctas"><button class="btn ghost" data-goto="equipos" data-anchor="eq-casseteras">Ver servicios</button></div>
             </div>
+            <div class="car-art"><img src="img/cassettera.jpg" alt="Casseteras AKAI apiladas" /></div>
+          </div>
+        </div>
+
+        <div class="car-slide">
+          <div class="car-slide-in">
+            <div class="car-copy">
+              <p class="eyebrow">Mantención · Restauración · Reparación</p>
+              <h2 class="car-h">Lectores de CD</h2>
+              <p class="hero-sub">Lente óptica, mecanismo de bandeja y correas. También MiniDisc, DAT y Laserdisc.</p>
+              <div class="hero-ctas"><button class="btn ghost" data-goto="equipos" data-anchor="eq-cd">Ver servicios</button></div>
+            </div>
+            <div class="car-art"><img src="img/cd-player.jpg" alt="Lector de CD de carga superior" /></div>
+          </div>
+        </div>
+
+        <div class="car-slide">
+          <div class="car-slide-in">
+            <div class="car-copy">
+              <p class="eyebrow">Mantención · Restauración · Reparación</p>
+              <h2 class="car-h">Tuners</h2>
+              <p class="hero-sub">Sintonía precisa, dial iluminado y recepción FM/AM restaurada.</p>
+              <div class="hero-ctas"><button class="btn ghost" data-goto="equipos" data-anchor="eq-tuners">Ver servicios</button></div>
+            </div>
+            <div class="car-art"><img src="img/tuner.jpg" alt="Rack de audio Cygnus con tuner y ecualizador" /></div>
           </div>
         </div>
       </div>
@@ -749,301 +718,307 @@
         <button class="car-dot" aria-current="false" aria-label="Ir a la diapositiva 2"></button>
         <button class="car-dot" aria-current="false" aria-label="Ir a la diapositiva 3"></button>
         <button class="car-dot" aria-current="false" aria-label="Ir a la diapositiva 4"></button>
+        <button class="car-dot" aria-current="false" aria-label="Ir a la diapositiva 5"></button>
+        <button class="car-dot" aria-current="false" aria-label="Ir a la diapositiva 6"></button>
+        <button class="car-dot" aria-current="false" aria-label="Ir a la diapositiva 7"></button>
       </div>
     </div>
 
+    <div class="intro">
+      <h2>Mantención, Restauración y Reparación de equipos de Audio HiFi Vintage</h2>
+      <p>
+        Receivers, amplificadores, tuners, ecualizadores gráficos, DSP, lectores de CD, casseteras,
+        tocadiscos, MiniDisc, DAT y Laserdisc. Atendemos todas las marcas clásicas y trabajamos
+        únicamente con repuestos 100 % originales, nuevos e importados.
+      </p>
+      <div class="badge-technics">
+        <img src="img/marcas/technics.png" alt="Technics" />
+        <span>Especialistas en la marca Technics</span>
+      </div>
+    </div>
+
+    <div class="section-title"><h2>Nuestros servicios</h2></div>
+    <div class="cards">
+      <div class="card">
+        <h3>Mantención</h3>
+        <p>Limpieza completa y profunda del equipo por dentro y por fuera, lubricación y verificación de funcionamiento. Tu equipo queda como recién salido de la caja.</p>
+        <span class="price num">desde $70.000</span>
+      </div>
+      <div class="card">
+        <h3>Reparación</h3>
+        <p>A nivel de componente electrónico, según las especificaciones del fabricante del equipo y siempre con partes 100 % originales y nuevas. El alcance se define en la revisión.</p>
+        <span class="price">valor según revisión</span>
+      </div>
+      <div class="card">
+        <h3>Restauración</h3>
+        <p>Limpieza profunda, resoldadura de componentes electrónicos sujeta a la revisión inicial y recuperación estética. Respetamos la originalidad de cada equipo.</p>
+        <span class="price">valor según revisión</span>
+      </div>
+    </div>
+    <div class="note">
+      <b>La revisión se cobra por separado de la reparación.</b> Incluye la evaluación completa del estado
+      del equipo, la documentación de todo el proceso, el informe al cliente y la búsqueda y cotización
+      de las piezas originales necesarias.
+    </div>
+
     <div class="section-title">
-      <h2>Servicios</h2>
-      <button class="st-link" data-goto="tv" style="color:var(--blue); font-size:14px;">Explorar todos los servicios</button>
+      <h2>Equipos que trabajamos</h2>
+      <button class="st-link" data-goto="equipos">Ver todos los equipos</button>
     </div>
     <div class="vp-grid">
-      <button class="vp-item big" data-goto="tv">
-        <span class="vp-tx">
-          <h3>Reparación de televisores</h3>
-          <span class="vp-label">Servicio recomendado</span>
-        </span>
-        <span class="vp-img">
-          <img src="img/tv-sala.jpg" alt="" />
-        </span>
-        <span class="vp-more">Conozca más</span>
+      <button class="vp-item big" data-goto="equipos" data-anchor="eq-tocadiscos">
+        <span class="vp-tx"><h3>Tocadiscos</h3><span class="vp-label">Nuestra especialidad · Technics</span></span>
+        <span class="vp-img"><img src="img/tocadiscos.jpg" alt="" /></span>
+        <span class="vp-more">Ver servicios</span>
       </button>
-      <button class="vp-item" data-goto="audio">
-        <span class="vp-tx">
-          <h3>Amplificadores y receivers</h3>
-          <span class="vp-label">Servicio recomendado</span>
-        </span>
-        <span class="vp-img">
-          <img src="img/receiver.jpg" alt="" style="object-position: center top;" />
-        </span>
-        <span class="vp-more">Conozca más</span>
+      <button class="vp-item" data-goto="equipos" data-anchor="eq-amplificadores">
+        <span class="vp-tx"><h3>Amplificadores</h3><span class="vp-label">Hi-Fi clásico</span></span>
+        <span class="vp-img"><img src="img/amplificador.jpg" alt="" /></span>
+        <span class="vp-more">Ver servicios</span>
       </button>
-      <button class="vp-item" data-goto="audio">
-        <span class="vp-tx">
-          <h3>Giradiscos y vinilo</h3>
-          <span class="vp-label">Servicio recomendado</span>
-        </span>
-        <span class="vp-img">
-          <img src="img/tocadiscos.jpg" alt="" />
-        </span>
-        <span class="vp-more">Conozca más</span>
+      <button class="vp-item" data-goto="equipos" data-anchor="eq-receivers">
+        <span class="vp-tx"><h3>Receivers</h3><span class="vp-label">FM · AM · Quad</span></span>
+        <span class="vp-img"><img src="img/receiver.jpg" alt="" /></span>
+        <span class="vp-more">Ver servicios</span>
       </button>
-      <button class="vp-item" data-goto="audio">
-        <span class="vp-tx">
-          <h3>Barras de sonido</h3>
-          <span class="vp-label">Servicio recomendado</span>
-        </span>
-        <span class="vp-img">
-          <img src="img/soundbar.jpg" alt="" />
-        </span>
-        <span class="vp-more">Conozca más</span>
+      <button class="vp-item" data-goto="equipos" data-anchor="eq-casseteras">
+        <span class="vp-tx"><h3>Casseteras</h3><span class="vp-label">Decks de cinta</span></span>
+        <span class="vp-img"><img src="img/cassettera.jpg" alt="" /></span>
+        <span class="vp-more">Ver servicios</span>
       </button>
-      <button class="vp-item" data-goto="tv">
-        <span class="vp-tx">
-          <h3>Calibración de imagen</h3>
-          <span class="vp-label">Servicio recomendado</span>
-        </span>
-        <span class="vp-img">
-          <img src="img/tv-banco.jpg" alt="" />
-        </span>
-        <span class="vp-more">Conozca más</span>
+      <button class="vp-item" data-goto="equipos" data-anchor="eq-ecualizadores">
+        <span class="vp-tx"><h3>Ecualizadores</h3><span class="vp-label">Gráficos y DSP</span></span>
+        <span class="vp-img"><img src="img/ecualizador.jpg" alt="" /></span>
+        <span class="vp-more">Ver servicios</span>
       </button>
     </div>
 
     <div class="zone bleed" style="margin-top:56px;">
       <div class="wrap">
-        <div class="section-title"><h2>El taller en cifras</h2></div>
-        <div class="stats">
-          <div class="stat"><span class="stat-label">Equipos reparados</span><b class="num">12.400<i>+</i></b></div>
-          <div class="stat"><span class="stat-label">Garantía en reparación</span><b class="num">6 <i>meses</i></b></div>
-          <div class="stat"><span class="stat-label">Valoración de clientes</span><b class="num">4,8<i>/5</i></b></div>
-          <div class="stat"><span class="stat-label">Años de experiencia</span><b class="num">18</b></div>
+        <div class="section-title"><h2>Cómo trabajamos</h2></div>
+        <div class="steps-grid">
+          <div class="step">
+            <span class="step-n">PASO 1</span>
+            <h3>Contacto</h3>
+            <p>Escríbenos por WhatsApp o llámanos. Cuéntanos qué equipo tienes y qué le pasa.</p>
+          </div>
+          <div class="step">
+            <span class="step-n">PASO 2</span>
+            <h3>Revisión</h3>
+            <p>Evaluación completa del equipo, con documentación de todo el proceso e informe al cliente. Se cobra por separado.</p>
+          </div>
+          <div class="step">
+            <span class="step-n">PASO 3</span>
+            <h3>Cotización de piezas</h3>
+            <p>Buscamos y cotizamos las piezas originales necesarias: disponibilidad, procedencia y precio.</p>
+          </div>
+          <div class="step">
+            <span class="step-n">PASO 4</span>
+            <h3>Trabajo y entrega</h3>
+            <p>Mantención, reparación o restauración según especificaciones del fabricante. Te informamos durante todo el proceso.</p>
+          </div>
         </div>
-      </div>
-    </div>
-
-    <div class="section-title"><h2>Cómo trabajamos</h2></div>
-    <div class="steps-grid">
-      <div class="step">
-        <span class="step-n">Paso 1</span>
-        <h3>Recepción y diagnóstico</h3>
-        <p>Traes el equipo o lo recogemos. En 24–48 horas te decimos exactamente qué falla.</p>
-      </div>
-      <div class="step">
-        <span class="step-n">Paso 2</span>
-        <h3>Presupuesto cerrado</h3>
-        <p>Precio por escrito antes de intervenir. Si no reparas, solo pagas el diagnóstico.</p>
-      </div>
-      <div class="step">
-        <span class="step-n">Paso 3</span>
-        <h3>Reparación y pruebas</h3>
-        <p>Reparación a nivel de componente y 24 horas de pruebas de estrés en el banco.</p>
-      </div>
-      <div class="step">
-        <span class="step-n">Paso 4</span>
-        <h3>Entrega con garantía</h3>
-        <p>Te lo devolvemos calibrado, limpio y con 6 meses de garantía por escrito.</p>
       </div>
     </div>
 
     <div class="section-title">
-      <h2>Marcas que reparamos</h2>
-      <button class="st-link" data-goto="marcas" style="color:var(--blue); font-size:14px;">Ver todas las marcas</button>
+      <h2>Marcas que trabajamos</h2>
+      <button class="st-link" data-goto="marcas">Ver todas las marcas</button>
     </div>
-    <div class="marquee" aria-label="Marcas que reparamos">
+    <div class="marquee" aria-label="Marcas de equipos que trabajamos">
       <div class="marquee-track">
         <div class="mq-group">
-          <span class="mq-item wm-samsung">SAMSUNG</span>
-          <span class="mq-item wm-lg">LG</span>
-          <span class="mq-item wm-sony">SONY</span>
-          <span class="mq-item wm-tcl">TCL</span>
-          <span class="mq-item wm-hisense">HISENSE</span>
-          <span class="mq-item wm-philips">PHILIPS</span>
-          <span class="mq-item wm-panasonic">Panasonic</span>
-          <span class="mq-item wm-xiaomi">XIAOMI</span>
-          <span class="mq-item wm-bose">BOSE</span>
-          <span class="mq-item wm-jbl">JBL</span>
-          <span class="mq-item wm-yamaha">YAMAHA</span>
-          <span class="mq-item wm-denon">DENON</span>
-          <span class="mq-item wm-marantz">marantz</span>
-          <span class="mq-item wm-pioneer">PIONEER</span>
-          <span class="mq-item wm-harman">harman/kardon</span>
-          <span class="mq-item wm-sonos">SONOS</span>
-          <span class="mq-item wm-bo">BANG &amp; OLUFSEN</span>
-          <span class="mq-item wm-technics">Technics</span>
+          <span class="mq-item"><img src="img/marcas/technics.png" alt="Technics" /></span>
+          <span class="mq-item"><img src="img/marcas/pioneer.png" alt="Pioneer" /></span>
+          <span class="mq-item"><img src="img/marcas/marantz.png" alt="Marantz" /></span>
+          <span class="mq-item"><img src="img/marcas/sansui.png" alt="Sansui" /></span>
+          <span class="mq-item"><img src="img/marcas/denon.png" alt="Denon" /></span>
+          <span class="mq-item"><img src="img/marcas/kenwood.png" alt="Kenwood" /></span>
+          <span class="mq-item"><img src="img/marcas/panasonic.png" alt="Panasonic" /></span>
+          <span class="mq-item"><img src="img/marcas/onkyo.png" alt="Onkyo" /></span>
+          <span class="mq-item"><img src="img/marcas/yamaha.png" alt="Yamaha" /></span>
+          <span class="mq-item mq-text">FISHER</span>
+          <span class="mq-item"><img src="img/marcas/jvc.png" alt="JVC" /></span>
+          <span class="mq-item mq-text">AKAI</span>
         </div>
         <div class="mq-group" aria-hidden="true">
-          <span class="mq-item wm-samsung">SAMSUNG</span>
-          <span class="mq-item wm-lg">LG</span>
-          <span class="mq-item wm-sony">SONY</span>
-          <span class="mq-item wm-tcl">TCL</span>
-          <span class="mq-item wm-hisense">HISENSE</span>
-          <span class="mq-item wm-philips">PHILIPS</span>
-          <span class="mq-item wm-panasonic">Panasonic</span>
-          <span class="mq-item wm-xiaomi">XIAOMI</span>
-          <span class="mq-item wm-bose">BOSE</span>
-          <span class="mq-item wm-jbl">JBL</span>
-          <span class="mq-item wm-yamaha">YAMAHA</span>
-          <span class="mq-item wm-denon">DENON</span>
-          <span class="mq-item wm-marantz">marantz</span>
-          <span class="mq-item wm-pioneer">PIONEER</span>
-          <span class="mq-item wm-harman">harman/kardon</span>
-          <span class="mq-item wm-sonos">SONOS</span>
-          <span class="mq-item wm-bo">BANG &amp; OLUFSEN</span>
-          <span class="mq-item wm-technics">Technics</span>
+          <span class="mq-item"><img src="img/marcas/technics.png" alt="" /></span>
+          <span class="mq-item"><img src="img/marcas/pioneer.png" alt="" /></span>
+          <span class="mq-item"><img src="img/marcas/marantz.png" alt="" /></span>
+          <span class="mq-item"><img src="img/marcas/sansui.png" alt="" /></span>
+          <span class="mq-item"><img src="img/marcas/denon.png" alt="" /></span>
+          <span class="mq-item"><img src="img/marcas/kenwood.png" alt="" /></span>
+          <span class="mq-item"><img src="img/marcas/panasonic.png" alt="" /></span>
+          <span class="mq-item"><img src="img/marcas/onkyo.png" alt="" /></span>
+          <span class="mq-item"><img src="img/marcas/yamaha.png" alt="" /></span>
+          <span class="mq-item mq-text">FISHER</span>
+          <span class="mq-item"><img src="img/marcas/jvc.png" alt="" /></span>
+          <span class="mq-item mq-text">AKAI</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <h2>Componentes originales</h2>
+      <button class="st-link" data-goto="repuestos">Conoce nuestros repuestos</button>
+    </div>
+    <p class="section-lead">Repuestos, partes y piezas 100 % originales importadas desde USA.</p>
+    <div class="marquee rev" aria-label="Marcas de componentes electrónicos que usamos" style="margin-top:14px;">
+      <div class="marquee-track">
+        <div class="mq-group">
+          <span class="mq-item mq-text">NICHICON</span>
+          <span class="mq-item mq-text">ELNA</span>
+          <span class="mq-item mq-text">RUBYCON</span>
+          <span class="mq-item"><img src="img/componentes/panasonic.png" alt="Panasonic" /></span>
+          <span class="mq-item"><img src="img/componentes/toshiba.png" alt="Toshiba" /></span>
+          <span class="mq-item mq-text">SANKEN</span>
+          <span class="mq-item"><img src="img/componentes/sanyo.png" alt="Sanyo" /></span>
+          <span class="mq-item"><img src="img/componentes/alps.png" alt="ALPS" /></span>
+        </div>
+        <div class="mq-group" aria-hidden="true">
+          <span class="mq-item mq-text">NICHICON</span>
+          <span class="mq-item mq-text">ELNA</span>
+          <span class="mq-item mq-text">RUBYCON</span>
+          <span class="mq-item"><img src="img/componentes/panasonic.png" alt="" /></span>
+          <span class="mq-item"><img src="img/componentes/toshiba.png" alt="" /></span>
+          <span class="mq-item mq-text">SANKEN</span>
+          <span class="mq-item"><img src="img/componentes/sanyo.png" alt="" /></span>
+          <span class="mq-item"><img src="img/componentes/alps.png" alt="" /></span>
         </div>
       </div>
     </div>
 
     <div class="links-utils">
       <button data-goto="contacto">Contáctenos</button>
-      <button data-goto="marcas">Marcas atendidas</button>
-      <button data-goto="contacto">Dónde encontrarnos</button>
+      <button data-goto="marcas">Marcas</button>
+      <button data-goto="repuestos">Repuestos originales</button>
     </div>
   </section>
 
-  <!-- ============ TELEVISORES ============ -->
-  <section class="panel" id="panel-tv" role="tabpanel" aria-labelledby="tab-tv" hidden>
+  <!-- ============ EQUIPOS ============ -->
+  <section class="panel" id="panel-equipos" role="tabpanel" aria-labelledby="tab-equipos" hidden>
     <div class="section-title">
-      <h2>Reparación de televisores</h2>
-      <button class="st-link" data-goto="contacto" style="color:var(--blue); font-size:14px;">Solicitar presupuesto</button>
+      <h2>Equipos de Audio HiFi Vintage que trabajamos</h2>
+      <button class="st-link" data-goto="contacto">Solicitar revisión</button>
     </div>
-    <p class="section-lead">Televisores LED, OLED y QLED de 24 a 98 pulgadas. Trabajamos con esquemas de servicio originales y repuesto verificado.</p>
-    <div class="cards" style="margin-top:24px;">
-      <div class="card">
-        <h3>Pantalla y retroiluminación</h3>
-        <p>Sustitución de tiras LED, difusores quemados, sombras y zonas oscuras. Imagen uniforme de nuevo.</p>
-        <span class="price num">desde $55.000</span>
+    <p class="section-lead">
+      En todos los equipos realizamos mantención, reparación y restauración, con herramientas
+      especializadas en audio y repuestos 100 % originales.
+    </p>
+    <div class="eq-grid" style="margin-top:24px;">
+      <div class="eq-block" id="eq-tocadiscos">
+        <h3>Tocadiscos y tornamesas</h3>
+        <p>Velocidad inestable, cambio de correas, cápsulas y agujas, ajuste de brazo y antiskating, revisión de motores. Nuestra especialidad: Technics.</p>
       </div>
-      <div class="card">
-        <h3>No enciende / fuente de alimentación</h3>
-        <p>Reparación de la placa de alimentación a nivel de componente: condensadores, MOSFET, PFC.</p>
-        <span class="price num">desde $45.000</span>
+      <div class="eq-block" id="eq-amplificadores">
+        <h3>Amplificadores</h3>
+        <p>Canal caído, distorsión, protección activada, potenciómetros con ruido. Reparación a nivel de componente con partes originales nuevas.</p>
       </div>
-      <div class="card">
-        <h3>Placa main y T-CON</h3>
-        <p>Imagen congelada, líneas verticales, doble imagen o arranques en bucle. Reballing incluido si procede.</p>
-        <span class="price num">desde $65.000</span>
+      <div class="eq-block" id="eq-receivers">
+        <h3>Receivers</h3>
+        <p>Etapas de potencia, sección FM/AM, iluminación de dial y vúmetros. Mantención y restauración completa de receivers estéreo y cuadrafónicos.</p>
       </div>
-      <div class="card">
-        <h3>Puertos HDMI y conectividad</h3>
-        <p>HDMI sin señal, ARC/eARC que no funciona, WiFi o Bluetooth caídos. Sustitución de conectores.</p>
-        <span class="price num">desde $35.000</span>
+      <div class="eq-block" id="eq-tuners">
+        <h3>Tuners</h3>
+        <p>Sintonía desplazada, dial sin iluminación, recepción débil. Ajuste y restauración de sintonizadores análogos y digitales.</p>
       </div>
-      <div class="card">
-        <h3>Software y Smart TV</h3>
-        <p>Actualización de firmware, recuperación de sistemas bloqueados y restauración de fábrica segura.</p>
-        <span class="price num">desde $25.000</span>
+      <div class="eq-block" id="eq-ecualizadores">
+        <h3>Ecualizadores gráficos</h3>
+        <p>Faders con ruido o sin efecto, canales caídos, restauración completa de la sección de tono.</p>
       </div>
-      <div class="card">
-        <h3>Calibración de imagen</h3>
-        <p>Ajuste profesional de color, gamma y balance de blancos con sonda. Ideal para cine en casa.</p>
-        <span class="price num">desde $60.000</span>
+      <div class="eq-block" id="eq-dsp">
+        <h3>DSP</h3>
+        <p>Procesadores de sonido digitales: revisión de fuentes, conectores y secciones de audio.</p>
+      </div>
+      <div class="eq-block" id="eq-cd">
+        <h3>Lectores de CD</h3>
+        <p>No lee discos, saltos de pista, bandeja que no abre. Revisión de lente óptica, mecanismo y correas.</p>
+      </div>
+      <div class="eq-block" id="eq-casseteras">
+        <h3>Casseteras</h3>
+        <p>Correas, cabezales, ajuste de azimut, mecanismos de transporte, contadores y autoreverse.</p>
+      </div>
+      <div class="eq-block" id="eq-minidisc">
+        <h3>MiniDisc</h3>
+        <p>Mecanismos de carga, lectura y grabación de equipos MiniDisc de todas las marcas clásicas.</p>
+      </div>
+      <div class="eq-block" id="eq-dat">
+        <h3>DAT</h3>
+        <p>Transporte de cinta, cabezales y electrónica de grabadores DAT.</p>
+      </div>
+      <div class="eq-block" id="eq-laserdisc">
+        <h3>Laserdisc</h3>
+        <p>Lectura, mecanismos y electrónica de reproductores Laserdisc.</p>
+      </div>
+      <div class="eq-block" id="eq-parlantes">
+        <h3>Parlantes</h3>
+        <p>Reemplazo de componentes dañados por piezas originales importadas y reparaciones menores de estética y acabado. No realizamos reconado: preferimos preservar la originalidad del equipo.</p>
       </div>
     </div>
     <div class="note">
-      El diagnóstico cuesta <b class="num">$12.000</b> y se descuenta íntegro del precio de la reparación.
-      Si tu panel no tiene reparación viable, te lo decimos claro y no pagas la mano de obra.
-    </div>
-    <div class="section-title"><h2>Preguntas frecuentes</h2></div>
-    <div>
-      <details class="faq">
-        <summary>¿Merece la pena reparar un televisor antiguo?</summary>
-        <div class="faq-body">Si la avería está en la fuente, la main o la retroiluminación, casi siempre sí: la reparación suele costar entre un 15 % y un 30 % del precio de un equipo nuevo equivalente. Si el panel está roto físicamente, te lo desaconsejamos y no cobramos mano de obra.</div>
-      </details>
-      <details class="faq">
-        <summary>¿Cuánto tarda una reparación de TV?</summary>
-        <div class="faq-body">La mayoría salen en 3–5 días hábiles. Si hay que pedir repuesto específico del fabricante, entre 7 y 10 días. Siempre te avisamos antes de empezar.</div>
-      </details>
-      <details class="faq">
-        <summary>¿Hacen servicio a domicilio?</summary>
-        <div class="faq-body">Para televisores de 65" o más ofrecemos retiro y entrega a domicilio en un radio de 30 km. Las reparaciones siempre se hacen en el taller, donde está el banco de pruebas.</div>
-      </details>
+      <b>Mantenciones desde $70.000.</b> El valor de cada reparación o restauración se define tras la
+      revisión del equipo, que se cobra por separado e incluye informe y cotización de piezas.
     </div>
   </section>
 
-  <!-- ============ AUDIO ============ -->
-  <section class="panel" id="panel-audio" role="tabpanel" aria-labelledby="tab-audio" hidden>
+  <!-- ============ REPUESTOS ============ -->
+  <section class="panel" id="panel-repuestos" role="tabpanel" aria-labelledby="tab-repuestos" hidden>
     <div class="section-title">
-      <h2>Hi-Fi y audio profesional</h2>
-      <button class="st-link" data-goto="contacto" style="color:var(--blue); font-size:14px;">Solicitar presupuesto</button>
+      <h2>Repuestos, partes y piezas 100 % originales</h2>
     </div>
-    <p class="section-lead">Desde tu amplificador de toda la vida hasta el equipo de escenario. Medimos, no adivinamos.</p>
+    <p class="section-lead">Importadas desde USA. Apostamos por la originalidad de los equipos.</p>
     <div class="cards" style="margin-top:24px;">
       <div class="card">
-        <h3>Amplificadores y receivers AV</h3>
-        <p>Canal caído, protección activada, distorsión o zumbido. Restauración de etapas de potencia clásicas.</p>
-        <span class="price num">desde $50.000</span>
+        <h3>Siempre nuevas y originales</h3>
+        <p>No trabajamos con componentes alternativos ni piezas usadas de otros equipos. Solo partes nuevas, de procedencia comprobada.</p>
       </div>
       <div class="card">
-        <h3>Altavoces y monitores</h3>
-        <p>Reconado de woofers, sustitución de tweeters y filtros de cruce. Monitores de estudio activos incluidos.</p>
-        <span class="price num">desde $38.000</span>
+        <h3>Según el fabricante</h3>
+        <p>Cada reparación se hace según las especificaciones del fabricante del equipo, respetando su diseño original.</p>
       </div>
       <div class="card">
-        <h3>Barras de sonido y subwoofers</h3>
-        <p>Sin sonido, HDMI-ARC caído, subwoofer que no enlaza. Reparación de placas amplificadoras clase D.</p>
-        <span class="price num">desde $40.000</span>
+        <h3>Búsqueda y cotización</h3>
+        <p>En la revisión buscamos y cotizamos las piezas necesarias: disponibilidad en el mercado, procedencia y precio, y te informamos antes de reparar.</p>
       </div>
-      <div class="card">
-        <h3>Giradiscos y vinilo</h3>
-        <p>Cambio de cápsula y aguja, ajuste de brazo, reparación de motores y velocidad inestable.</p>
-        <span class="price num">desde $35.000</span>
-      </div>
-      <div class="card">
-        <h3>Equipos de escenario y estudio</h3>
-        <p>Etapas de potencia, mesas de mezcla, interfaces y previos. Mantenimiento para salas y bandas.</p>
-        <span class="price num">desde $60.000</span>
-      </div>
-      <div class="card">
-        <h3>Mantenimiento preventivo</h3>
-        <p>Limpieza de potenciómetros, recambio de condensadores envejecidos y verificación completa en banco.</p>
-        <span class="price num">desde $45.000</span>
-      </div>
+    </div>
+    <div class="section-title"><h2>Marcas de componentes que usamos</h2></div>
+    <div class="brand-grid">
+      <div class="wm wm-text">NICHICON</div>
+      <div class="wm wm-text">ELNA</div>
+      <div class="wm wm-text">RUBYCON</div>
+      <div class="wm"><img src="img/componentes/panasonic.png" alt="Panasonic" /></div>
+      <div class="wm"><img src="img/componentes/toshiba.png" alt="Toshiba" /></div>
+      <div class="wm wm-text">SANKEN</div>
+      <div class="wm"><img src="img/componentes/sanyo.png" alt="Sanyo" /></div>
+      <div class="wm"><img src="img/componentes/alps.png" alt="ALPS" /></div>
     </div>
     <div class="note">
-      Todo equipo de audio pasa por el banco de medida: respuesta en frecuencia, THD y potencia real
-      antes y después de la reparación. Te entregamos el informe con las medidas.
-    </div>
-    <div class="section-title"><h2>Nuestro banco de pruebas</h2></div>
-    <div class="data-rows" style="max-width:560px;">
-      <div class="row"><span>Generador de señal</span><b class="num">10 Hz – 100 kHz</b></div>
-      <div class="row"><span>Analizador de distorsión</span><b class="num">THD+N &lt; 0,001 %</b></div>
-      <div class="row"><span>Carga fantasma</span><b class="num">2/4/8 Ω · 500 W</b></div>
-      <div class="row"><span>Osciloscopio</span><b class="num">4 canales · 200 MHz</b></div>
-      <div class="row"><span>Sonda de calibración de imagen</span><b>colorímetro + patrón</b></div>
+      Condensadores, transistores, potenciómetros y demás componentes electrónicos originales
+      para reparaciones de audio. La gente sabe distinguir un equipo reparado con buenas piezas.
     </div>
   </section>
 
   <!-- ============ MARCAS ============ -->
   <section class="panel" id="panel-marcas" role="tabpanel" aria-labelledby="tab-marcas" hidden>
     <div class="section-title">
-      <h2>Marcas atendidas</h2>
+      <h2>Marcas que trabajamos</h2>
     </div>
-    <p class="section-lead">Reparamos todas las marcas principales. Si la tuya no está en la lista, pregúntanos: casi seguro que también.</p>
-    <div class="filter-row" role="group" aria-label="Filtrar marcas por categoría" style="margin-top:24px;">
-      <button class="chip" aria-pressed="true" data-filter="all">Todas</button>
-      <button class="chip" aria-pressed="false" data-filter="tv">Televisores</button>
-      <button class="chip" aria-pressed="false" data-filter="audio">Audio</button>
-    </div>
-    <div class="brand-grid" id="brand-grid">
-      <div class="wm wm-samsung" data-cat="tv"><span class="cat">TV</span>SAMSUNG</div>
-      <div class="wm wm-lg" data-cat="tv"><span class="cat">TV</span>LG</div>
-      <div class="wm wm-sony" data-cat="tv audio"><span class="cat">TV·AUDIO</span>SONY</div>
-      <div class="wm wm-tcl" data-cat="tv"><span class="cat">TV</span>TCL</div>
-      <div class="wm wm-hisense" data-cat="tv"><span class="cat">TV</span>HISENSE</div>
-      <div class="wm wm-philips" data-cat="tv audio"><span class="cat">TV·AUDIO</span>PHILIPS</div>
-      <div class="wm wm-panasonic" data-cat="tv audio"><span class="cat">TV·AUDIO</span>Panasonic</div>
-      <div class="wm wm-xiaomi" data-cat="tv"><span class="cat">TV</span>XIAOMI</div>
-      <div class="wm wm-bose" data-cat="audio"><span class="cat">AUDIO</span>BOSE</div>
-      <div class="wm wm-jbl" data-cat="audio"><span class="cat">AUDIO</span>JBL</div>
-      <div class="wm wm-yamaha" data-cat="audio"><span class="cat">AUDIO</span>YAMAHA</div>
-      <div class="wm wm-denon" data-cat="audio"><span class="cat">AUDIO</span>DENON</div>
-      <div class="wm wm-marantz" data-cat="audio"><span class="cat">AUDIO</span>marantz</div>
-      <div class="wm wm-pioneer" data-cat="audio"><span class="cat">AUDIO</span>PIONEER</div>
-      <div class="wm wm-harman" data-cat="audio"><span class="cat">AUDIO</span>harman/kardon</div>
-      <div class="wm wm-sonos" data-cat="audio"><span class="cat">AUDIO</span>SONOS</div>
-      <div class="wm wm-bo" data-cat="audio"><span class="cat">AUDIO</span>BANG &amp; OLUFSEN</div>
-      <div class="wm wm-technics" data-cat="audio"><span class="cat">AUDIO</span>Technics</div>
+    <p class="section-lead">
+      Atendemos todas las marcas clásicas de audio, con especialización en Technics.
+    </p>
+    <div class="brand-grid" style="margin-top:24px;">
+      <div class="wm"><span class="spec-tag">Especialidad</span><img src="img/marcas/technics.png" alt="Technics" /></div>
+      <div class="wm"><img src="img/marcas/pioneer.png" alt="Pioneer" /></div>
+      <div class="wm"><img src="img/marcas/marantz.png" alt="Marantz" /></div>
+      <div class="wm"><img src="img/marcas/sansui.png" alt="Sansui" /></div>
+      <div class="wm"><img src="img/marcas/denon.png" alt="Denon" /></div>
+      <div class="wm"><img src="img/marcas/kenwood.png" alt="Kenwood" /></div>
+      <div class="wm"><img src="img/marcas/panasonic.png" alt="Panasonic" /></div>
+      <div class="wm"><img src="img/marcas/onkyo.png" alt="Onkyo" /></div>
+      <div class="wm"><img src="img/marcas/yamaha.png" alt="Yamaha" /></div>
+      <div class="wm wm-text">FISHER</div>
+      <div class="wm"><img src="img/marcas/jvc.png" alt="JVC" /></div>
+      <div class="wm wm-text">AKAI</div>
     </div>
     <div class="note">
       Las marcas mostradas pertenecen a sus respectivos propietarios y se citan únicamente para indicar
@@ -1055,12 +1030,12 @@
   <!-- ============ CONTACTO ============ -->
   <section class="panel" id="panel-contacto" role="tabpanel" aria-labelledby="tab-contacto" hidden>
     <div class="section-title">
-      <h2>Solicite un presupuesto sin compromiso</h2>
+      <h2>Solicita la revisión de tu equipo</h2>
     </div>
-    <p class="section-lead">Cuéntanos qué le pasa a tu equipo y te llamamos en menos de 24 horas hábiles.</p>
+    <p class="section-lead">Cuéntanos qué equipo tienes y qué le pasa, y te respondemos a la brevedad.</p>
     <div class="contact-grid" style="margin-top:24px;">
       <div class="panel-box">
-        <h3>Solicitud de reparación</h3>
+        <h3>Formulario de contacto</h3>
         <p class="box-sub">Los campos con * son obligatorios.</p>
         <form id="contact-form" novalidate>
           <div class="field-row">
@@ -1073,73 +1048,70 @@
               <input id="f-tel" name="telefono" type="tel" required autocomplete="tel" />
             </div>
           </div>
-          <div class="field-row">
-            <div class="field">
-              <label for="f-equipo">Tipo de equipo *</label>
-              <select id="f-equipo" required>
-                <option value="tv-s">Televisor hasta 43"</option>
-                <option value="tv-m" selected>Televisor 44–65"</option>
-                <option value="tv-l">Televisor más de 65"</option>
-                <option value="soundbar">Barra de sonido</option>
-                <option value="ampli">Amplificador / Receiver AV</option>
-                <option value="speakers">Altavoces / Monitores</option>
-                <option value="pro">Equipo profesional</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="f-problema">Problema principal *</label>
-              <select id="f-problema" required>
-                <option value="no-enciende" selected>No enciende</option>
-                <option value="imagen">Problema de imagen / pantalla</option>
-                <option value="sonido">Sin sonido / canal caído</option>
-                <option value="conector">Conectores / HDMI</option>
-                <option value="software">Software / configuración</option>
-                <option value="mantenimiento">Mantenimiento / revisión</option>
-              </select>
-            </div>
+          <div class="field">
+            <label for="f-equipo">Tipo de equipo *</label>
+            <select id="f-equipo" required>
+              <option selected>Tocadiscos / Tornamesa</option>
+              <option>Amplificador</option>
+              <option>Receiver</option>
+              <option>Tuner</option>
+              <option>Ecualizador gráfico</option>
+              <option>DSP</option>
+              <option>Lector de CD</option>
+              <option>Cassettera</option>
+              <option>MiniDisc</option>
+              <option>DAT</option>
+              <option>Laserdisc</option>
+              <option>Parlantes</option>
+            </select>
           </div>
           <div class="field">
             <label for="f-marca">Marca y modelo</label>
-            <input id="f-marca" name="marca" type="text" placeholder="Ej.: Samsung QE55Q80B" />
+            <input id="f-marca" name="marca" type="text" placeholder="Ej.: Technics SL-1200 MK2" />
           </div>
           <div class="field">
-            <label for="f-desc">Describe la avería</label>
-            <textarea id="f-desc" name="descripcion" placeholder="Ej.: se ve la mitad inferior de la pantalla muy oscura desde hace una semana…"></textarea>
+            <label for="f-desc">¿Qué le pasa al equipo?</label>
+            <textarea id="f-desc" name="descripcion" placeholder="Ej.: gira más lento de lo normal y el canal izquierdo suena bajo…"></textarea>
           </div>
-
-          <div class="estimate-out" aria-live="polite">
-            <span class="est-label">Estimación referencial</span>
-            <div class="amount num" id="estimate-amount">$45.000 – $135.000</div>
-            <p class="fine">Basada en fallas similares en el taller. El presupuesto cerrado se confirma tras el diagnóstico ($12.000, descontables de la reparación).</p>
+          <div class="note" style="margin-top:0;">
+            <b>Mantenciones desde $70.000.</b> La revisión se cobra por separado y su valor se informa al recibir el equipo.
           </div>
-
-          <div style="margin-top:22px;">
+          <div style="margin-top:20px;">
             <button class="btn" type="submit">Enviar solicitud</button>
           </div>
         </form>
       </div>
       <div style="display:flex; flex-direction:column; gap:20px;">
         <div class="panel-box">
-          <h3>Dónde encontrarnos</h3>
-          <p class="box-sub">Visítanos o llámanos directamente.</p>
+          <h3>Datos de contacto</h3>
           <div class="data-rows">
-            <div class="row"><span>Dirección</span><b>Santiago</b></div>
-            <div class="row"><span>Teléfono</span><b class="num">+56 9 9081 2134</b></div>
-            <div class="row"><span>WhatsApp</span><b class="num">+56 9 9081 2134</b></div>
+            <div class="row"><span>WhatsApp / Teléfono</span><b class="num">+56 9 9081 2134</b></div>
             <div class="row"><span>Email</span><b>offoxx@gmail.com</b></div>
-            <div class="row"><span>Lunes–Viernes</span><b class="num">9:00 – 19:00</b></div>
-            <div class="row"><span>Sábado</span><b class="num">10:00 – 14:00</b></div>
+            <div class="row"><span>Ubicación</span><b>Santiago</b></div>
+            <div class="row"><span>Horario</span><b class="num">Lunes a Sábado · 9:00 – 20:00</b></div>
           </div>
         </div>
-        <div class="panel-box">
-          <h3>Garantías</h3>
-          <div class="data-rows">
-            <div class="row"><span>Reparación</span><b class="num">6 meses por escrito</b></div>
-            <div class="row"><span>Repuestos</span><b>originales o equivalentes verificados</b></div>
-            <div class="row"><span>Sin arreglo</span><b>solo pagas el diagnóstico</b></div>
-          </div>
+        <div class="panel-box qr-box">
+          <h3>Escríbenos por WhatsApp</h3>
+          <img src="img/qr-whatsapp.png" alt="Código QR para abrir una conversación de WhatsApp con OFFIXAUDIO" />
+          <p>Escanea el código con tu teléfono para abrir el chat directamente.</p>
         </div>
       </div>
+    </div>
+    <div class="section-title"><h2>Preguntas frecuentes</h2></div>
+    <div>
+      <details class="faq">
+        <summary>¿La revisión tiene costo?</summary>
+        <div class="faq-body">Sí. La revisión se cobra por separado de la reparación e incluye la evaluación completa del equipo, la documentación del proceso, el informe al cliente y la búsqueda y cotización de piezas originales.</div>
+      </details>
+      <details class="faq">
+        <summary>¿Usan repuestos alternativos?</summary>
+        <div class="faq-body">No. Trabajamos únicamente con partes 100 % originales y nuevas, importadas desde USA, según las especificaciones del fabricante de cada equipo.</div>
+      </details>
+      <details class="faq">
+        <summary>¿Reparan parlantes? ¿Hacen reconado?</summary>
+        <div class="faq-body">Reemplazamos los componentes dañados del parlante por piezas originales importadas y hacemos reparaciones menores de estética. No hacemos reconado: preferimos preservar la originalidad del equipo.</div>
+      </details>
     </div>
   </section>
 </main>
@@ -1148,10 +1120,18 @@
   <div class="footer-in">
     <div class="footer-brand">
       <img src="img/logo.png" alt="" />
-      <span>© OFFIXAUDIO 2026 · Servicio técnico audiovisual independiente</span>
+      <span>© OFFIXAUDIO 2026 · Mantención, Restauración y Reparación de Audio HiFi Vintage · Santiago</span>
     </div>
   </div>
 </footer>
+
+<a class="wsp-float" href="https://wa.me/56990812134" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp al +56 9 9081 2134">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5Z"/>
+    <path d="M8.7 9.2c.2 2.5 3.6 5.9 6.1 6.1l1.4-1.4-2-1.3-1.1.6c-.8-.4-1.9-1.5-2.3-2.3l.6-1.1-1.3-2Z"/>
+  </svg>
+  <span>WhatsApp</span>
+</a>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -1160,8 +1140,8 @@
   const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
   const panels = {
     inicio: document.getElementById('panel-inicio'),
-    tv: document.getElementById('panel-tv'),
-    audio: document.getElementById('panel-audio'),
+    equipos: document.getElementById('panel-equipos'),
+    repuestos: document.getElementById('panel-repuestos'),
     marcas: document.getElementById('panel-marcas'),
     contacto: document.getElementById('panel-contacto'),
   };
@@ -1180,7 +1160,7 @@
     });
     window.scrollTo({ top: 0, behavior: 'auto' });
     if (name === 'inicio') {
-      goSlide(0);          // siempre empieza en el tocadiscos antiguo
+      goSlide(0);
       startCarousel();
       startScope();
     } else {
@@ -1201,7 +1181,16 @@
   });
 
   document.querySelectorAll('[data-goto]').forEach((btn) => {
-    btn.addEventListener('click', () => selectTab(btn.dataset.goto, true));
+    btn.addEventListener('click', () => {
+      selectTab(btn.dataset.goto);
+      const anchor = btn.dataset.anchor;
+      if (anchor) {
+        setTimeout(() => {
+          const el = document.getElementById(anchor);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 60);
+      }
+    });
   });
 
   /* ---------- Header: fusión del logo al hacer scroll ---------- */
@@ -1212,7 +1201,7 @@
   window.addEventListener('scroll', onHeaderScroll, { passive: true });
   onHeaderScroll();
 
-  /* ---------- Carrusel del hero ---------- */
+  /* ---------- Carrusel (3 s por diapositiva) ---------- */
   const carTrack = document.getElementById('car-track');
   const carSlides = Array.from(carTrack.children);
   const carDots = Array.from(document.getElementById('car-dots').children);
@@ -1231,7 +1220,7 @@
   function startCarousel() {
     stopCarousel();
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      carTimer = setInterval(() => goSlide(carIndex + 1), 5000);
+      carTimer = setInterval(() => goSlide(carIndex + 1), 3000);
     }
   }
   carDots.forEach((dot, i) => dot.addEventListener('click', () => { goSlide(i); startCarousel(); }));
@@ -1239,9 +1228,8 @@
   document.getElementById('car-next').addEventListener('click', () => { goSlide(carIndex + 1); startCarousel(); });
   carousel.addEventListener('mouseenter', stopCarousel);
   carousel.addEventListener('mouseleave', () => {
-    if (document.getElementById('panel-inicio').classList.contains('is-active')) startCarousel();
+    if (panels.inicio.classList.contains('is-active')) startCarousel();
   });
-  /* Deslizar con el dedo en pantallas táctiles */
   let touchStartX = null;
   carousel.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
@@ -1253,52 +1241,13 @@
     touchStartX = null;
     if (dx > 45) goSlide(carIndex - 1);
     else if (dx < -45) goSlide(carIndex + 1);
-    if (document.getElementById('panel-inicio').classList.contains('is-active')) startCarousel();
+    if (panels.inicio.classList.contains('is-active')) startCarousel();
   }, { passive: true });
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) stopCarousel();
-    else if (document.getElementById('panel-inicio').classList.contains('is-active')) startCarousel();
+    else if (panels.inicio.classList.contains('is-active')) startCarousel();
   });
   startCarousel();
-
-  /* ---------- Brand filter ---------- */
-  const chips = Array.from(document.querySelectorAll('.chip'));
-  const marks = Array.from(document.querySelectorAll('.wm'));
-  chips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
-      const f = chip.dataset.filter;
-      marks.forEach((m) => {
-        m.classList.toggle('is-hidden', f !== 'all' && !m.dataset.cat.split(' ').includes(f));
-      });
-    });
-  });
-
-  /* ---------- Estimator (CLP) ---------- */
-  const BASE = {
-    'tv-s': [30000, 90000], 'tv-m': [45000, 135000], 'tv-l': [70000, 200000],
-    'soundbar': [30000, 85000], 'ampli': [45000, 145000], 'speakers': [28000, 90000], 'pro': [60000, 180000],
-  };
-  const FACTOR = {
-    'no-enciende': 1.0, 'imagen': 1.35, 'sonido': 1.0,
-    'conector': 0.8, 'software': 0.55, 'mantenimiento': 0.7,
-  };
-  const selEquipo = document.getElementById('f-equipo');
-  const selProblema = document.getElementById('f-problema');
-  const outAmount = document.getElementById('estimate-amount');
-
-  function clp(n) {
-    n = Math.max(15000, Math.round(n / 1000) * 1000);
-    return '$' + n.toLocaleString('es-CL');
-  }
-  function updateEstimate() {
-    const base = BASE[selEquipo.value];
-    const k = FACTOR[selProblema.value];
-    outAmount.textContent = clp(base[0] * k) + ' – ' + clp(base[1] * k);
-  }
-  selEquipo.addEventListener('change', updateEstimate);
-  selProblema.addEventListener('change', updateEstimate);
-  updateEstimate();
 
   /* ---------- Form + toast ---------- */
   const toast = document.getElementById('toast');
@@ -1314,21 +1263,20 @@
     const nombre = document.getElementById('f-nombre').value.trim();
     const tel = document.getElementById('f-tel').value.trim();
     if (!nombre || !tel) {
-      showToast('Falta tu nombre o teléfono: los necesitamos para llamarte.');
+      showToast('Falta tu nombre o teléfono: los necesitamos para responderte.');
       return;
     }
     e.target.reset();
-    updateEstimate();
-    showToast('Solicitud registrada. Te llamamos en menos de 24 horas hábiles.');
+    showToast('Solicitud registrada. Te contactamos a la brevedad.');
   });
 
-  /* ---------- Oscilloscope canvas (visual del hero) ---------- */
+  /* ---------- Osciloscopio del hero ---------- */
   const canvas = document.getElementById('scope-canvas');
   const ctx = canvas.getContext('2d');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const TRACE_A = '#4C9EFF';
-  const TRACE_B = '#39424C';
-  const GRID = 'rgba(255, 255, 255, 0.06)';
+  const TRACE_A = '#9AA4AE';
+  const TRACE_B = '#3A3A3A';
+  const GRID = 'rgba(255, 255, 255, 0.05)';
 
   function sizeCanvas() {
     const dpr = window.devicePixelRatio || 1;
@@ -1364,7 +1312,7 @@
 
     ctx.strokeStyle = TRACE_A;
     ctx.lineWidth = 2;
-    ctx.globalAlpha = 0.75;
+    ctx.globalAlpha = 0.55;
     ctx.beginPath();
     for (let x = 0; x <= w; x += 3) {
       const y = h * 0.58
