@@ -374,6 +374,72 @@
   .step h3 { font-size: 17px; font-weight: 500; margin-top: 8px; }
   .step p { font-size: 13.5px; color: var(--muted); margin-top: 8px; }
 
+  /* ---------- Franja "vive tu música" (fotos + frases en fundido) ---------- */
+  .life {
+    position: relative;
+    height: 400px;
+    overflow: hidden;
+    background: #101010;
+  }
+  .life figure {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    transition: opacity 800ms ease;
+  }
+  .life figure.is-on { opacity: 1; }
+  .life figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .life figure figcaption {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 0 64px;
+    background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.72));
+  }
+  .life .life-cap {
+    max-width: 1080px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 24px;
+  }
+  .life .life-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+  }
+  .life .life-phrase {
+    font-size: clamp(22px, 3.6vw, 36px);
+    font-weight: 300;
+    color: #FFFFFF;
+    max-width: 24ch;
+    margin-top: 8px;
+    line-height: 1.2;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+    text-wrap: balance;
+  }
+  .life-dots {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: 12px;
+  }
+  @media (max-width: 700px) {
+    .life { height: 320px; }
+    .life figure figcaption { padding-bottom: 56px; }
+  }
+
   /* ---------- Marquesinas de logos ---------- */
   .marquee {
     overflow: hidden;
@@ -821,6 +887,43 @@
       </div>
     </div>
 
+    <div class="life bleed" id="life-carousel" style="margin-top:56px;" aria-label="Vive tu música">
+      <figure class="is-on">
+        <img src="img/vida-vinilo.jpg" alt="Mujer disfrutando su música junto a un tocadiscos" />
+        <figcaption><div class="life-cap">
+          <p class="life-eyebrow">OFFIXAUDIO</p>
+          <p class="life-phrase">Volviendo a la vida las leyendas del audio</p>
+        </div></figcaption>
+      </figure>
+      <figure>
+        <img src="img/vida-caballero.jpg" alt="Caballero poniendo un disco en su tocadiscos" />
+        <figcaption><div class="life-cap">
+          <p class="life-eyebrow">OFFIXAUDIO</p>
+          <p class="life-phrase">Tu música, como cuando el equipo salió de su caja</p>
+        </div></figcaption>
+      </figure>
+      <figure>
+        <img src="img/vida-dj.jpg" alt="DJ mezclando en tornamesas de vinilo" />
+        <figcaption><div class="life-cap">
+          <p class="life-eyebrow">OFFIXAUDIO</p>
+          <p class="life-phrase">Tu equipo en buenas manos</p>
+        </div></figcaption>
+      </figure>
+      <figure>
+        <img src="img/vida-sala.jpg" alt="Sala de audio con torre HiFi iluminada" />
+        <figcaption><div class="life-cap">
+          <p class="life-eyebrow">OFFIXAUDIO</p>
+          <p class="life-phrase">Tú disfruta de la música: de la reparación nos encargamos nosotros</p>
+        </div></figcaption>
+      </figure>
+      <div class="life-dots" id="life-dots">
+        <button class="car-dot" aria-current="true" aria-label="Ir a la imagen 1"></button>
+        <button class="car-dot" aria-current="false" aria-label="Ir a la imagen 2"></button>
+        <button class="car-dot" aria-current="false" aria-label="Ir a la imagen 3"></button>
+        <button class="car-dot" aria-current="false" aria-label="Ir a la imagen 4"></button>
+      </div>
+    </div>
+
     <div class="section-title">
       <h2>Marcas que trabajamos</h2>
       <button class="st-link" data-goto="marcas">Ver todas las marcas</button>
@@ -859,10 +962,10 @@
     </div>
 
     <div class="section-title">
-      <h2>Componentes originales</h2>
+      <h2>Componentes electrónicos originales</h2>
       <button class="st-link" data-goto="repuestos">Conoce nuestros repuestos</button>
     </div>
-    <p class="section-lead">Repuestos, partes y piezas 100 % originales importadas desde USA.</p>
+    <p class="section-lead">Repuestos, partes y componentes electrónicos 100 % originales, importados desde USA.</p>
     <div class="marquee rev" aria-label="Marcas de componentes electrónicos que usamos" style="margin-top:14px;">
       <div class="marquee-track">
         <div class="mq-group">
@@ -964,7 +1067,7 @@
   <!-- ============ REPUESTOS ============ -->
   <section class="panel" id="panel-repuestos" role="tabpanel" aria-labelledby="tab-repuestos" hidden>
     <div class="section-title">
-      <h2>Repuestos, partes y piezas 100 % originales</h2>
+      <h2>Repuestos y componentes electrónicos 100 % originales</h2>
     </div>
     <p class="section-lead">Importadas desde USA. Apostamos por la originalidad de los equipos.</p>
     <div class="cards" style="margin-top:24px;">
@@ -981,7 +1084,7 @@
         <p>En la revisión buscamos y cotizamos las piezas necesarias: disponibilidad en el mercado, procedencia y precio, y te informamos antes de reparar.</p>
       </div>
     </div>
-    <div class="section-title"><h2>Marcas de componentes que usamos</h2></div>
+    <div class="section-title"><h2>Marcas de componentes electrónicos que usamos</h2></div>
     <div class="brand-grid">
       <div class="wm wm-text">NICHICON</div>
       <div class="wm wm-text">ELNA</div>
@@ -1162,9 +1265,11 @@
     if (name === 'inicio') {
       goSlide(0);
       startCarousel();
+      startLife();
       startScope();
     } else {
       stopCarousel();
+      stopLife();
     }
   }
 
@@ -1248,6 +1353,34 @@
     else if (panels.inicio.classList.contains('is-active')) startCarousel();
   });
   startCarousel();
+
+  /* ---------- Franja "vive tu música" (fundido cada 4,5 s) ---------- */
+  const lifeBox = document.getElementById('life-carousel');
+  const lifeSlides = Array.from(lifeBox.querySelectorAll('figure'));
+  const lifeDots = Array.from(document.getElementById('life-dots').children);
+  let lifeIndex = 0;
+  let lifeTimer = null;
+
+  function goLife(i) {
+    lifeIndex = ((i % lifeSlides.length) + lifeSlides.length) % lifeSlides.length;
+    lifeSlides.forEach((f, j) => f.classList.toggle('is-on', j === lifeIndex));
+    lifeDots.forEach((d, j) => d.setAttribute('aria-current', String(j === lifeIndex)));
+  }
+  function stopLife() {
+    if (lifeTimer) { clearInterval(lifeTimer); lifeTimer = null; }
+  }
+  function startLife() {
+    stopLife();
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      lifeTimer = setInterval(() => goLife(lifeIndex + 1), 4500);
+    }
+  }
+  lifeDots.forEach((dot, i) => dot.addEventListener('click', () => { goLife(i); startLife(); }));
+  lifeBox.addEventListener('mouseenter', stopLife);
+  lifeBox.addEventListener('mouseleave', () => {
+    if (panels.inicio.classList.contains('is-active')) startLife();
+  });
+  startLife();
 
   /* ---------- Form + toast ---------- */
   const toast = document.getElementById('toast');

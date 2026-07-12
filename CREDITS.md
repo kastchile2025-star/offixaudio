@@ -13,6 +13,10 @@ Las fotografías provienen de [Wikimedia Commons](https://commons.wikimedia.org)
 | `img/ecualizador.jpg` | [Restored Victor SEA-50 graphic equalizer](https://commons.wikimedia.org/wiki/File:Restored_Victor_SEA-50_graphic_equalizer_(23789626633).jpg) | Dilshan Jayakody | CC BY-SA 2.0 |
 | `img/tuner.jpg` | [Cygnus 400 series audio set (left half)](https://commons.wikimedia.org/wiki/File:Cygnus_400_series_audio_set_-_TU-800_Digital_AM-FM_Stereo_Tuner,_CP-400_Stereo_Control_Preamplifier,_GE-400_Stereo_Graphic_Equalizer,_PA-400_Stereo_Power_Amplifier_-_left_half_(2015-09-26_by_.v1ctor_Casale.).jpg) | .v1ctor Casale. | CC BY 2.0 |
 | `img/cd-player.jpg` | [Cd-player-top-loading-and-DAC](https://commons.wikimedia.org/wiki/File:Cd-player-top-loading-and-DAC.jpg) | Adamantios | CC BY-SA 3.0 |
+| `img/vida-vinilo.jpg` | [Woman enjoying music while sitting on floor with vinyl record player in cozy room](https://commons.wikimedia.org/wiki/File:Woman_enjoying_music_while_sitting_on_floor_with_vinyl_record_player_in_cozy_room.jpg) | Shixart1985 | CC BY 2.0 |
+| `img/vida-caballero.jpg` | [Elderly man in plaid shirt listens to vinyl records in cozy living room](https://commons.wikimedia.org/wiki/File:Elderly_man_in_plaid_shirt_listens_to_vinyl_records_in_cozy_living_room_surrounded_by_books_and_warm_light.jpg) | Shixart1985 | CC BY 2.0 |
+| `img/vida-dj.jpg` | [Tresor Nightclub Berlin DJ Beatmatching](https://commons.wikimedia.org/wiki/File:Tresor_Nightclub_Berlin_DJ_Beatmatching.jpg) | Angie Linder | CC BY-SA 2.0 |
+| `img/vida-sala.jpg` | [McIntosh system 2024 spring](https://commons.wikimedia.org/wiki/File:McIntosh_system_2024_spring.jpg) | Chuckwagon700 | CC BY-SA 4.0 |
 
 Las imágenes fueron redimensionadas (máx. 900 px) y recomprimidas; no se hicieron otras modificaciones.
 
