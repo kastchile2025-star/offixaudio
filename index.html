@@ -34,6 +34,7 @@
     font-size: 15px;
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
   h1, h2, h3 { margin: 0; font-weight: 400; line-height: 1.2; text-wrap: balance; }
   p { margin: 0; max-width: 68ch; }
@@ -107,8 +108,17 @@
   }
   .header-phone:hover { color: var(--blue); text-decoration: none; }
   @media (max-width: 760px) {
+    .header-in { flex-wrap: wrap; gap: 0 12px; padding: 4px 16px 0; min-height: 0; }
+    .brand { order: 1; padding: 6px 0; gap: 10px; }
+    .brand-logo { width: 38px; height: 38px; }
     .brand-text .brand-sub { display: none; }
     .brand-name { font-size: 20px; }
+    .header-right { order: 2; margin-left: auto; }
+    .header-phone { font-size: 13px; }
+    .tabbar { order: 3; flex-basis: 100%; margin-left: 0; gap: 0; }
+    .tab { padding: 10px 12px 8px; font-size: 14px; }
+    .site-header.is-scrolled .brand-logo { width: 28px; height: 28px; }
+    .site-header.is-scrolled .brand-name { font-size: 12px; }
   }
 
   /* ---------- Nav de pestañas (estilo nav horizontal Technics) ---------- */
@@ -262,8 +272,14 @@
     box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
   }
   @media (max-width: 760px) {
-    .car-slide-in { grid-template-columns: 1fr; padding: 48px 56px 104px; gap: 24px; }
-    .car-art img { max-height: 200px; }
+    .car-slide-in { grid-template-columns: 1fr; padding: 34px 22px 100px; gap: 20px; }
+    .car-copy .car-h { font-size: 23px; }
+    .car-copy .hero-sub { font-size: 14px; }
+    .car-art img { max-height: 190px; }
+    .car-arrow { top: auto; bottom: 16px; transform: none; width: 38px; height: 38px; font-size: 20px; }
+    .car-arrow.prev { left: 18px; }
+    .car-arrow.next { right: 18px; }
+    .car-dots { bottom: 30px; }
   }
   .car-arrow {
     position: absolute;
@@ -602,6 +618,33 @@
   }
   .footer-brand { display: flex; align-items: center; gap: 12px; }
   .footer-brand img { width: 34px; height: 34px; border-radius: 6px; display: block; }
+
+  /* ---------- Ajustes generales para móvil ---------- */
+  @media (max-width: 700px) {
+    .wrap { padding: 0 16px; }
+    .section-title { padding: 32px 0 18px; }
+    .section-title h2 { font-size: 22px; }
+    .section-lead { font-size: 14px; }
+    .panel { padding-bottom: 48px; }
+    .stats { gap: 10px; }
+    .stat { padding: 16px 18px; }
+    .stat b { font-size: 26px; }
+    .panel-box { padding: 20px 16px; }
+    .estimate-out .amount { font-size: 25px; }
+    .data-rows .row { flex-wrap: wrap; row-gap: 2px; }
+    .data-rows .row b { text-align: left; }
+    .mq-group { gap: 44px; padding-right: 44px; }
+    .btn { min-width: 0; padding: 12px 22px; font-size: 14px; }
+    .note { padding: 14px 16px; font-size: 13px; }
+    .vp-item.big .vp-img, .vp-item.big .vp-img img { min-height: 230px; }
+    .vp-tx { padding: 14px 16px 12px; }
+    .vp-tx h3 { font-size: 16px; }
+    .vp-item.big .vp-tx h3 { font-size: 18px; }
+    .vp-more { padding: 0 16px 14px; }
+    .zone { padding: 4px 0 40px; }
+    .filter-row .chip { padding: 8px 16px; }
+    .footer-in { justify-content: center; text-align: center; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition: none !important; animation: none !important; }
@@ -1198,6 +1241,20 @@
   carousel.addEventListener('mouseleave', () => {
     if (document.getElementById('panel-inicio').classList.contains('is-active')) startCarousel();
   });
+  /* Deslizar con el dedo en pantallas táctiles */
+  let touchStartX = null;
+  carousel.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    stopCarousel();
+  }, { passive: true });
+  carousel.addEventListener('touchend', (e) => {
+    if (touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    touchStartX = null;
+    if (dx > 45) goSlide(carIndex - 1);
+    else if (dx < -45) goSlide(carIndex + 1);
+    if (document.getElementById('panel-inicio').classList.contains('is-active')) startCarousel();
+  }, { passive: true });
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) stopCarousel();
     else if (document.getElementById('panel-inicio').classList.contains('is-active')) startCarousel();
