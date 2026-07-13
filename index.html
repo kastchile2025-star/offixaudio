@@ -534,6 +534,8 @@
   .field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid var(--ink); outline-offset: -1px; }
   .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   @media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .btn[disabled] { opacity: 0.6; cursor: default; }
   .data-rows { display: flex; flex-direction: column; }
   .data-rows .row {
     display: flex;
@@ -1140,20 +1142,29 @@
       <div class="panel-box">
         <h3>Formulario de contacto</h3>
         <p class="box-sub">Los campos con * son obligatorios.</p>
-        <form id="contact-form" novalidate>
+        <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" novalidate>
+          <input type="hidden" name="access_key" value="a77e08b8-3cfa-46a6-8cd5-00c822d263dd" />
+          <input type="hidden" name="subject" value="Nueva solicitud de revisión — OFFIXAUDIO" />
+          <input type="hidden" name="from_name" value="Formulario OFFIXAUDIO" />
+          <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <div class="field-row">
             <div class="field">
               <label for="f-nombre">Nombre *</label>
-              <input id="f-nombre" name="nombre" type="text" required autocomplete="name" />
+              <input id="f-nombre" name="name" type="text" required autocomplete="name" />
             </div>
             <div class="field">
-              <label for="f-tel">Teléfono *</label>
-              <input id="f-tel" name="telefono" type="tel" required autocomplete="tel" />
+              <label for="f-email">Email *</label>
+              <input id="f-email" name="email" type="email" required autocomplete="email" placeholder="tucorreo@ejemplo.com" />
             </div>
           </div>
-          <div class="field">
-            <label for="f-equipo">Tipo de equipo *</label>
-            <select id="f-equipo" required>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-tel">Teléfono / WhatsApp *</label>
+              <input id="f-tel" name="Teléfono" type="tel" required autocomplete="tel" />
+            </div>
+            <div class="field">
+              <label for="f-equipo">Tipo de equipo *</label>
+              <select id="f-equipo" name="Tipo de equipo" required>
               <option selected>Tocadiscos / Tornamesa</option>
               <option>Amplificador</option>
               <option>Receiver</option>
@@ -1166,15 +1177,16 @@
               <option>DAT</option>
               <option>Laserdisc</option>
               <option>Parlantes</option>
-            </select>
+              </select>
+            </div>
           </div>
           <div class="field">
             <label for="f-marca">Marca y modelo</label>
-            <input id="f-marca" name="marca" type="text" placeholder="Ej.: Technics SL-1200 MK2" />
+            <input id="f-marca" name="Marca y modelo" type="text" placeholder="Ej.: Technics SL-1200 MK2" />
           </div>
           <div class="field">
             <label for="f-desc">¿Qué le pasa al equipo?</label>
-            <textarea id="f-desc" name="descripcion" placeholder="Ej.: gira más lento de lo normal y el canal izquierdo suena bajo…"></textarea>
+            <textarea id="f-desc" name="Mensaje" placeholder="Ej.: gira más lento de lo normal y el canal izquierdo suena bajo…"></textarea>
           </div>
           <div class="note" style="margin-top:0;">
             <b>Mantenciones desde $70.000.</b> La revisión se cobra por separado y su valor se informa al recibir el equipo.
@@ -1391,16 +1403,39 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => toast.classList.remove('show'), 4200);
   }
-  document.getElementById('contact-form').addEventListener('submit', (e) => {
+  const contactForm = document.getElementById('contact-form');
+  const submitBtn = contactForm.querySelector('button[type="submit"]');
+  contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const nombre = document.getElementById('f-nombre').value.trim();
+    const email = document.getElementById('f-email').value.trim();
     const tel = document.getElementById('f-tel').value.trim();
-    if (!nombre || !tel) {
-      showToast('Falta tu nombre o teléfono: los necesitamos para responderte.');
+    if (!nombre || !email || !tel) {
+      showToast('Completa tu nombre, email y teléfono para poder responderte.');
       return;
     }
-    e.target.reset();
-    showToast('Solicitud registrada. Te contactamos a la brevedad.');
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
+    try {
+      const res = await fetch(contactForm.action, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(contactForm),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success !== false) {
+        contactForm.reset();
+        showToast('¡Solicitud enviada! Te contactamos a la brevedad.');
+      } else {
+        showToast('No se pudo enviar. Escríbenos por WhatsApp: +56 9 9081 2134.');
+      }
+    } catch (err) {
+      showToast('Sin conexión al enviar. Escríbenos por WhatsApp: +56 9 9081 2134.');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Enviar solicitud';
+    }
   });
 
   /* ---------- Osciloscopio del hero ---------- */
