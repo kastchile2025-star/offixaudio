@@ -463,8 +463,12 @@
   .mq-item.mq-text { font-weight: 800; font-size: 21px; letter-spacing: 0.06em; color: #7A7A7A; transition: color 180ms ease; }
   .mq-item.mq-text:hover { color: var(--ink); }
   @keyframes mq-scroll { to { transform: translateX(-50%); } }
+  /* Las marquesinas de logos giran siempre en bucle continuo, aunque el
+     dispositivo tenga "reducir movimiento" o ahorro de batería activado.
+     Nunca muestran barra deslizadora. */
   @media (prefers-reduced-motion: reduce) {
-    .marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+    .marquee-track { animation: mq-scroll 40s linear infinite !important; }
+    .marquee.rev .marquee-track { animation-direction: reverse !important; }
   }
 
   /* ---------- Equipos (bloques) ---------- */
